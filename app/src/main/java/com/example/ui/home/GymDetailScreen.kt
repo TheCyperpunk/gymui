@@ -101,7 +101,7 @@ fun GymDetailScreen(
                         .background(
                             Brush.verticalGradient(
                                 colors = listOf(
-                                    Color(0x99090D1F),
+                                    Color(0x99222021),
                                     Color.Transparent,
                                     DarkNavy
                                 )
@@ -115,7 +115,7 @@ fun GymDetailScreen(
                         .padding(top = statusBarPadding + 12.dp, start = 20.dp)
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(Color(0x80090D1F))
+                        .background(Color(0x80222021))
                         .border(1.dp, GlassBorderLight, CircleShape)
                         .clickable { onBackClick() }
                         .testTag("gym_detail_back"),
@@ -134,10 +134,10 @@ fun GymDetailScreen(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(start = 20.dp, bottom = 12.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0xDD090D1F))
-                        .border(1.dp, Color(0x40A6CE39), RoundedCornerShape(10.dp))
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(Color(0xDD222021))
+                        .border(1.dp, Color(0x40A6CE39), RoundedCornerShape(50.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
                 ) {
                     Text(
                         text = gym.statusText,
@@ -246,10 +246,10 @@ fun GymDetailScreen(
                     allAmenities.forEach { tag ->
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(RoundedCornerShape(50.dp))
                                 .background(GlassSurfaceMedium)
-                                .border(1.dp, GlassBorderLight, RoundedCornerShape(12.dp))
-                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                .border(1.dp, GlassBorderLight, RoundedCornerShape(50.dp))
+                                .padding(horizontal = 14.dp, vertical = 8.dp)
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(
@@ -277,7 +277,7 @@ fun GymDetailScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .background(Color(0xF2090D1F))
+                .background(Color(0xF2222021))
                 .padding(bottom = navBarPadding + 16.dp, top = 12.dp)
                 .padding(horizontal = 20.dp)
         ) {

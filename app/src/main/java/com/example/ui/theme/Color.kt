@@ -2,12 +2,12 @@ package com.example.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Byce Brand Palette
-val DarkNavy = Color(0xFF090D1F)
-val DarkNavyDepth = Color(0xFF101426)
+// Byce Brand Palette (#222021 Charcoal Theme)
+val DarkNavy = Color(0xFF222021) // Primary background #222021
+val DarkNavyDepth = Color(0xFF161415) // Deep charcoal depth tone
 val CharcoalSurface = Color(0x22FFFFFF) // Translucent button surface matching login fields
 
-// Byce UI Accent Palette (Frosted Silver-Slate matching the Dark Navy glass theme)
+// Byce UI Accent Palette (Frosted Silver-Slate matching the Charcoal glass theme)
 val ByceGreen = Color(0xFFE2E8F0) // Main UI accent matching the dark glass theme
 val ByceGreenGlow = Color(0x38FFFFFF)
 val ByceGreenHighlight = Color(0x80FFFFFF)
@@ -19,7 +19,7 @@ val NeonGreenGlow = Color(0x60A6CE39)
 // Translucent Glass Palette
 val GlassSurfaceLight = Color(0x1FFFFFFF)
 val GlassSurfaceMedium = Color(0x2BFFFFFF)
-val GlassSurfaceDark = Color(0x500C1022)
+val GlassSurfaceDark = Color(0x50161415)
 
 val GlassBorderLight = Color(0x3DFFFFFF)
 val GlassBorderSpecular = Color(0x75FFFFFF)

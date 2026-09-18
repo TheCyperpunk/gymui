@@ -112,7 +112,7 @@ fun OnboardingScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            Color(0x18101426),
+                            Color(0x18222021),
                             Color(0x05A6CE39),
                             Color.Transparent
                         ),
@@ -169,7 +169,7 @@ fun OnboardingScreen(
                                         colors = listOf(
                                             Color(0x30000000),
                                             Color.Transparent,
-                                            Color(0xC0090D1F),
+                                            Color(0xC0222021),
                                             DarkNavy
                                         )
                                     )

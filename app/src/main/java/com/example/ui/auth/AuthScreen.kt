@@ -1,5 +1,6 @@
 package com.example.ui.auth
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -35,6 +36,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -48,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.ui.components.LiquidGlassButton
 import com.example.ui.components.LiquidGlassSegmentedControl
 import com.example.ui.components.LiquidGlassTextField
@@ -126,21 +129,6 @@ fun AuthScreen(
             )
             .testTag("user_auth_screen_container")
     ) {
-        // Atmospheric subtle ambient backdrop
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.radialGradient(
-                        colors = listOf(
-                            Color(0x15101426),
-                            Color(0x05A6CE39),
-                            Color.Transparent
-                        ),
-                        radius = 1200f
-                    )
-                )
-        )
 
         Column(
             modifier = Modifier
@@ -624,3 +612,4 @@ fun AuthScreen(
 }
 }
 }
+

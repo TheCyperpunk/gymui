@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
     enableEdgeToEdge()
     setContent {
       MyApplicationTheme {
-        var currentScreen by remember { mutableStateOf(AppScreen.HOME) }
+        var currentScreen by remember { mutableStateOf(AppScreen.ONBOARDING) }
         var selectedGymForDetail by remember { mutableStateOf<GymLocation?>(null) }
 
         Crossfade(targetState = currentScreen, label = "screen_transition") { screen ->

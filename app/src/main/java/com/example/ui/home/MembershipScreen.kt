@@ -63,9 +63,9 @@ data class PlanOption(
 )
 
 val SAMPLE_PLANS = listOf(
-    PlanOption("Byce Basic", "$49/mo", "4 visits/month", listOf("Access to standard gyms", "App check-in pass", "Flexible cancellation")),
-    PlanOption("Byce Monthly", "$69/mo", "12 visits/month", listOf("All partner gyms access", "Peak hours access", "Sauna & classes included"), isCurrent = true),
-    PlanOption("Byce All Access", "$99/mo", "Unlimited visits", listOf("Unlimited partner gym access", "Guest pass included", "Priority class booking"))
+    PlanOption("Byce Basic", "$49/mo", "Standard gym access", listOf("Access to standard gyms", "App check-in pass", "Flexible cancellation")),
+    PlanOption("Byce Monthly", "$69/mo", "All partner gyms access", listOf("All partner gyms access", "Peak hours access", "Sauna & classes included"), isCurrent = true),
+    PlanOption("Byce All Access", "$99/mo", "Unlimited partner access", listOf("Unlimited partner gym access", "Guest pass included", "Priority class booking"))
 )
 
 /**
@@ -78,6 +78,7 @@ fun MembershipScreen(
     modifier: Modifier = Modifier
 ) {
     var selectedPlanTitle by remember { mutableStateOf("Byce Monthly") }
+    val scrollState = rememberScrollState()
 
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val navBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -87,10 +88,13 @@ fun MembershipScreen(
             .fillMaxSize()
             .background(DarkNavy)
     ) {
+        // Floating ambient blur orbs
+        com.example.ui.components.FloatingBlurBalls()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 90.dp)
                 .padding(horizontal = 20.dp)
         ) {
@@ -187,26 +191,6 @@ fun MembershipScreen(
                         color = TextMuted
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    LinearProgressIndicator(
-                        progress = { 8f / 12f },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(6.dp)
-                            .clip(CircleShape),
-                        color = ByceGreen,
-                        trackColor = Color(0x20FFFFFF)
-                    )
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = "8 of 12 visits remaining",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = ByceGreen
-                    )
                 }
             }
 
@@ -234,6 +218,7 @@ fun MembershipScreen(
         // Bottom Nav Bar
         GlassBottomBar(
             selectedTab = "Membership",
+            isScrolling = scrollState.isScrollInProgress,
             onTabSelected = onTabSelected,
             modifier = Modifier.align(Alignment.BottomCenter)
         )

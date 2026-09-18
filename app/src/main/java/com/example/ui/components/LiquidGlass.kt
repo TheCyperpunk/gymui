@@ -55,19 +55,43 @@ import com.example.ui.theme.TextWhite
 
 /**
  * Custom Liquid Glass Container Composable.
- * Features translucent multi-layer glass backdrop, subtle edge reflection,
- * 1px translucent border, soft depth shadow, and 24.dp rounded corners.
+ * Features translucent multi-layer glass backdrop with smooth multi-stop gradient,
+ * soft depth shadow, and customizable rounded corners with no distracting borders.
  */
 @Composable
 fun LiquidGlassCard(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(22.dp),
-    backgroundColor: Color = CharcoalSurface,
-    borderColor: Color = Color(0x2BFFFFFF),
+    backgroundColor: Color? = null,
+    backgroundBrush: Brush? = null,
+    borderColor: Color? = null,
+    borderBrush: Brush? = null,
     borderWidth: Dp = 0.dp,
-    shadowElevation: Dp = 6.dp,
+    shadowElevation: Dp = 0.dp,
     content: @Composable () -> Unit
 ) {
+    val effectiveBackgroundBrush = backgroundBrush ?: if (backgroundColor == null) {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0x22FFFFFF),
+                Color(0x1BFFFFFF),
+                Color(0x15FFFFFF),
+                Color(0x10FFFFFF),
+                Color(0x0CFFFFFF)
+            )
+        )
+    } else null
+
+    val effectiveBorderBrush = borderBrush ?: if (borderColor == null) {
+        Brush.linearGradient(
+            colors = listOf(
+                GlassBorderSpecular,
+                GlassBorderLight,
+                Color(0x15FFFFFF)
+            )
+        )
+    } else null
+
     Box(
         modifier = modifier
             .shadow(
@@ -77,14 +101,20 @@ fun LiquidGlassCard(
                 spotColor = Color(0x80000000)
             )
             .clip(shape)
-            .background(backgroundColor)
+            .then(
+                if (effectiveBackgroundBrush != null) {
+                    Modifier.background(effectiveBackgroundBrush)
+                } else if (backgroundColor != null) {
+                    Modifier.background(backgroundColor)
+                } else Modifier
+            )
             .then(
                 if (borderWidth > 0.dp) {
-                    Modifier.border(
-                        width = borderWidth,
-                        color = borderColor,
-                        shape = shape
-                    )
+                    if (effectiveBorderBrush != null) {
+                        Modifier.border(borderWidth, effectiveBorderBrush, shape)
+                    } else if (borderColor != null) {
+                        Modifier.border(borderWidth, borderColor, shape)
+                    } else Modifier
                 } else Modifier
             )
     ) {
@@ -105,7 +135,7 @@ fun LiquidGlassPill(
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color(0x3BFFFFFF),
         borderColor = Color(0x4DFFFFFF),
-        shadowElevation = 8.dp
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -143,9 +173,9 @@ fun LiquidGlassStatPanel(
     LiquidGlassCard(
         modifier = modifier.testTag("liquid_glass_stat_panel"),
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = Color(0x450E1326),
+        backgroundColor = Color(0x45222021),
         borderColor = Color(0x35FFFFFF),
-        shadowElevation = 16.dp
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp),
@@ -212,9 +242,9 @@ fun LiquidGlassApprovalPanel(
     LiquidGlassCard(
         modifier = modifier.testTag("liquid_glass_approval_panel"),
         shape = RoundedCornerShape(22.dp),
-        backgroundColor = Color(0x4D0E1428),
+        backgroundColor = Color(0x4D222021),
         borderColor = Color(0x40FFFFFF),
-        shadowElevation = 18.dp
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
@@ -387,8 +417,8 @@ fun LiquidGlassSegmentedControl(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0x300E1326),
-                        Color(0x20090D1F)
+                        Color(0x30222021),
+                        Color(0x20161415)
                     )
                 )
             )
@@ -493,6 +523,7 @@ fun LiquidGlassTextField(
     placeholder: String = "",
     modifier: Modifier = Modifier,
     leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
     isPassword: Boolean = false,
     isPasswordVisible: Boolean = false,
     onPasswordToggleClick: (() -> Unit)? = null,
@@ -586,7 +617,10 @@ fun LiquidGlassTextField(
                     )
                 }
 
-                if (isPassword && onPasswordToggleClick != null) {
+                if (trailingIcon != null) {
+                    Spacer(modifier = Modifier.width(6.dp))
+                    trailingIcon()
+                } else if (isPassword && onPasswordToggleClick != null) {
                     Box(
                         modifier = Modifier
                             .size(36.dp)

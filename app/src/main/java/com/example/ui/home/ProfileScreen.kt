@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Badge
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.components.LiquidGlassCard
 import com.example.ui.theme.ByceGreen
 import com.example.ui.theme.DarkNavy
 import com.example.ui.theme.GlassBorderLight
@@ -59,6 +57,7 @@ fun ProfileScreen(
     onTabSelected: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberScrollState()
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val navBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
@@ -67,10 +66,13 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(DarkNavy)
     ) {
+        // Floating ambient blur orbs
+        com.example.ui.components.FloatingBlurBalls()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
                 .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 90.dp)
                 .padding(horizontal = 20.dp)
         ) {
@@ -108,54 +110,49 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Profile Avatar & Info Card
-            LiquidGlassCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(22.dp)
+            // Profile Avatar & Info (Direct on background without card)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(GlassSurfaceMedium),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .clip(CircleShape)
-                            .background(GlassSurfaceMedium),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Avatar",
-                            tint = TextWhite,
-                            modifier = Modifier.size(40.dp)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Text(
-                        text = "Alex Morgan",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextWhite
-                    )
-
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    Text(
-                        text = "+1 (555) 234-5678 · Member since 2024",
-                        fontSize = 12.sp,
-                        color = TextSubtle
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Avatar",
+                        tint = TextWhite,
+                        modifier = Modifier.size(44.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Text(
+                    text = "Alex Morgan",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "+1 (555) 234-5678 · Member since 2024",
+                    fontSize = 13.sp,
+                    color = TextSubtle
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Settings Options List
+            // Settings Options List (Direct on background without card container)
             Text(
                 text = "Account Settings",
                 fontSize = 16.sp,
@@ -165,63 +162,51 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            LiquidGlassCard(
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    ProfileOptionItem(
-                        icon = Icons.Default.Badge,
-                        title = "Member Credential Pass",
-                        subtitle = "BYCE-9842-7104"
-                    )
-                    ProfileOptionItem(
-                        icon = Icons.Default.Notifications,
-                        title = "Notifications",
-                        subtitle = "Push alerts & visit updates"
-                    )
-                    ProfileOptionItem(
-                        icon = Icons.Default.Lock,
-                        title = "Privacy & Security",
-                        subtitle = "Terms, privacy policy & permissions"
-                    )
-                }
+                ProfileOptionItem(
+                    icon = Icons.Default.Badge,
+                    title = "Member Credential Pass",
+                    subtitle = "BYCE-9842-7104"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Notifications,
+                    title = "Notifications",
+                    subtitle = "Push alerts & visit updates"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Lock,
+                    title = "Privacy & Security",
+                    subtitle = "Terms, privacy policy & permissions"
+                )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            // Log out button
+            // Logout button (Clean text button without icon or background)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
                     .clip(RoundedCornerShape(14.dp))
-                    .background(Color(0x15FF6B6B))
-                    .border(1.dp, Color(0x40FF6B6B), RoundedCornerShape(14.dp))
                     .clickable { onLogOutClick() },
                 contentAlignment = Alignment.Center
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.ExitToApp,
-                        contentDescription = null,
-                        tint = Color(0xFFFF6B6B),
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Log out of Byce",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFF6B6B)
-                    )
-                }
+                Text(
+                    text = "Logout",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFF6B6B)
+                )
             }
         }
 
         // Bottom Nav Bar
         GlassBottomBar(
             selectedTab = "Profile",
+            isScrolling = scrollState.isScrollInProgress,
             onTabSelected = onTabSelected,
             modifier = Modifier.align(Alignment.BottomCenter)
         )

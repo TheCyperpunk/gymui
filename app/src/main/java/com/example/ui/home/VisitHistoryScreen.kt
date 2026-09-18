@@ -1,5 +1,6 @@
 package com.example.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,7 +25,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,9 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
+import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.components.LiquidGlassCard
 import com.example.ui.theme.ByceGreen
 import com.example.ui.theme.DarkNavy
@@ -45,12 +49,12 @@ import com.example.ui.theme.TextSubtle
 import com.example.ui.theme.TextWhite
 
 val FULL_HISTORY = listOf(
-    VisitLog("h1", "Pulse Fitness", "Today", "6:42 PM"),
-    VisitLog("h2", "Iron Vault Gym", "Yesterday", "7:15 AM"),
-    VisitLog("h3", "Pulse Fitness", "Sep 12, 2026", "5:30 PM"),
-    VisitLog("h4", "Zenith Health Club", "Sep 10, 2026", "8:00 AM"),
-    VisitLog("h5", "Pulse Fitness", "Sep 08, 2026", "6:15 PM"),
-    VisitLog("h6", "Iron Vault Gym", "Sep 05, 2026", "7:45 AM")
+    VisitLog("h1", "Pulse Fitness", "Today", "6:42 PM", imageRes = R.drawable.pulse_fitness_gym_1789554105342),
+    VisitLog("h2", "Iron Vault Gym", "Yesterday", "7:15 AM", imageRes = R.drawable.iron_vault_gym_1789554122844),
+    VisitLog("h3", "Pulse Fitness", "Sep 12, 2026", "5:30 PM", imageRes = R.drawable.pulse_fitness_gym_1789554105342),
+    VisitLog("h4", "Zenith Health Club", "Sep 10, 2026", "8:00 AM", imageRes = R.drawable.zenith_health_club_1789554140602),
+    VisitLog("h5", "Pulse Fitness", "Sep 08, 2026", "6:15 PM", imageRes = R.drawable.pulse_fitness_gym_1789554105342),
+    VisitLog("h6", "Iron Vault Gym", "Sep 05, 2026", "7:45 AM", imageRes = R.drawable.iron_vault_gym_1789554122844)
 )
 
 /**
@@ -69,6 +73,9 @@ fun VisitHistoryScreen(
             .fillMaxSize()
             .background(DarkNavy)
     ) {
+        // Ambient Rotating Blur Orbs
+        FloatingBlurBalls()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -124,20 +131,14 @@ fun VisitHistoryScreen(
                                 .padding(14.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(
+                            Image(
+                                painter = painterResource(id = visit.imageRes),
+                                contentDescription = visit.gymName,
+                                contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(Color(0x20A6CE39)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.FitnessCenter,
-                                    contentDescription = null,
-                                    tint = ByceGreen,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
+                            )
 
                             Spacer(modifier = Modifier.width(14.dp))
 
@@ -156,20 +157,11 @@ fun VisitHistoryScreen(
                                 )
                             }
 
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(6.dp)
-                                        .clip(CircleShape)
-                                        .background(ByceGreen)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = visit.status,
-                                    fontSize = 12.sp,
-                                    color = TextMuted
-                                )
-                            }
+                            Text(
+                                text = visit.status,
+                                fontSize = 12.sp,
+                                color = TextMuted
+                            )
                         }
                     }
                 }

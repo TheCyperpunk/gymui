@@ -1,6 +1,8 @@
 package com.example.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -37,12 +39,13 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,6 +55,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -64,7 +68,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.ui.components.LiquidGlassCard
+import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.theme.ByceGreen
+import com.example.ui.theme.ByceGreenGlow
 import com.example.ui.theme.CharcoalSurface
 import com.example.ui.theme.DarkNavy
 import com.example.ui.theme.DarkNavyDepth
@@ -93,7 +99,10 @@ data class GymLocation(
     val tags: List<String>,
     val statusText: String,
     val address: String = "100 Market St, San Francisco, CA",
-    val hours: String = "6:00 AM - 10:00 PM"
+    val hours: String = "6:00 AM - 10:00 PM",
+    val latitude: Double = 37.789172,
+    val longitude: Double = -122.401449,
+    val rating: Double = 4.9
 )
 
 data class VisitLog(
@@ -101,7 +110,8 @@ data class VisitLog(
     val gymName: String,
     val dateText: String,
     val timeText: String,
-    val status: String = "Checked in"
+    val status: String = "Checked in",
+    val imageRes: Int = R.drawable.pulse_fitness_gym_1789554105342
 )
 
 // Sample Data
@@ -113,7 +123,9 @@ val SAMPLE_GYMS = listOf(
         cityArea = "Downtown · SF",
         imageRes = R.drawable.pulse_fitness_gym_1789554105342,
         tags = listOf("Free weights", "Classes", "Sauna"),
-        statusText = "Open · Quiet now"
+        statusText = "Open · Quiet now",
+        latitude = 37.789172,
+        longitude = -122.401449
     ),
     GymLocation(
         id = "2",
@@ -122,7 +134,9 @@ val SAMPLE_GYMS = listOf(
         cityArea = "SoMa · SF",
         imageRes = R.drawable.iron_vault_gym_1789554122844,
         tags = listOf("Heavy lifting", "Sauna", "Turf"),
-        statusText = "Open · Moderate crowd"
+        statusText = "Open · Moderate crowd",
+        latitude = 37.778519,
+        longitude = -122.395232
     ),
     GymLocation(
         id = "3",
@@ -131,14 +145,16 @@ val SAMPLE_GYMS = listOf(
         cityArea = "Marina · SF",
         imageRes = R.drawable.zenith_health_club_1789554140602,
         tags = listOf("Cardio deck", "Pool", "Yoga"),
-        statusText = "Open 24/7"
+        statusText = "Open 24/7",
+        latitude = 37.800542,
+        longitude = -122.436128
     )
 )
 
 val SAMPLE_VISITS = listOf(
-    VisitLog("v1", "Pulse Fitness", "Today", "6:42 PM"),
-    VisitLog("v2", "Iron Vault Gym", "Yesterday", "7:15 AM"),
-    VisitLog("v3", "Pulse Fitness", "Sep 12", "5:30 PM")
+    VisitLog("v1", "Pulse Fitness", "Today", "6:42 PM", imageRes = R.drawable.pulse_fitness_gym_1789554105342),
+    VisitLog("v2", "Iron Vault Gym", "Yesterday", "7:15 AM", imageRes = R.drawable.iron_vault_gym_1789554122844),
+    VisitLog("v3", "Pulse Fitness", "Sep 12", "5:30 PM", imageRes = R.drawable.pulse_fitness_gym_1789554105342)
 )
 
 /**
@@ -158,6 +174,7 @@ fun HomeScreen(
 ) {
     var selectedTab by remember { mutableStateOf("Home") }
     var membershipState by remember { mutableStateOf(MembershipStatus.ACTIVE) }
+    val scrollState = rememberScrollState()
 
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     val navBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -170,78 +187,81 @@ fun HomeScreen(
                     colors = listOf(
                         DarkNavy,
                         DarkNavyDepth,
-                        Color(0xFF0C1022)
+                        Color(0xFF161415)
                     )
                 )
             )
     ) {
+        // Ambient Moving Blur Orbs
+        FloatingBlurBalls()
+
         // Scrollable Content Container
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 90.dp)
-                .padding(horizontal = 20.dp)
+                .verticalScroll(scrollState)
+                .padding(bottom = navBarPadding + 90.dp)
         ) {
             // --------------------------------------------------
-            // 1. TOP HEADER
+            // 1. TOP HERO CARD (Touches top & both sides, rounded bottom)
             // --------------------------------------------------
-            HomeTopHeader(
+            TopHeroMembershipCard(
                 memberName = memberName,
-                onProfileClick = onNavigateToProfile
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // --------------------------------------------------
-            // 2. MEMBERSHIP STATUS CARD
-            // --------------------------------------------------
-            MembershipStatusCard(
                 status = membershipState,
+                statusBarPadding = statusBarPadding,
+                onProfileClick = onNavigateToProfile,
                 onBrowsePlans = onNavigateToBrowsePlans,
                 onManageMembership = onNavigateToMembership
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // --------------------------------------------------
-            // 3. PRIMARY CHECK-IN ACTION
-            // --------------------------------------------------
-            PrimaryCheckInCard(
-                hasActiveMembership = (membershipState == MembershipStatus.ACTIVE),
-                onCheckInClick = onNavigateToCheckIn,
-                onBrowsePlansClick = onNavigateToBrowsePlans
-            )
+            // Main Content Container
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                // --------------------------------------------------
+                // 2. PRIMARY CHECK-IN ACTION
+                // --------------------------------------------------
+                PrimaryCheckInCard(
+                    hasActiveMembership = (membershipState == MembershipStatus.ACTIVE),
+                    onCheckInClick = onNavigateToCheckIn,
+                    onBrowsePlansClick = onNavigateToBrowsePlans
+                )
 
-            Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
-            // --------------------------------------------------
-            // 4. NEARBY GYMS
-            // --------------------------------------------------
-            NearbyGymsSection(
-                gyms = SAMPLE_GYMS,
-                onSeeAllClick = onNavigateToDiscover,
-                onGymClick = onNavigateToGymDetail
-            )
+                // --------------------------------------------------
+                // 3. NEARBY GYMS
+                // --------------------------------------------------
+                NearbyGymsSection(
+                    gyms = SAMPLE_GYMS,
+                    onSeeAllClick = onNavigateToDiscover,
+                    onGymClick = onNavigateToGymDetail
+                )
 
-            Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
-            // --------------------------------------------------
-            // 5. RECENT ACTIVITY
-            // --------------------------------------------------
-            RecentActivitySection(
-                visits = SAMPLE_VISITS,
-                onViewHistoryClick = onNavigateToHistory
-            )
+                // --------------------------------------------------
+                // 4. RECENT VISITS
+                // --------------------------------------------------
+                RecentActivitySection(
+                    visits = SAMPLE_VISITS,
+                    onViewHistoryClick = onNavigateToHistory
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
 
         // --------------------------------------------------
-        // 6. BOTTOM NAVIGATION BAR
+        // 5. BOTTOM NAVIGATION BAR
         // --------------------------------------------------
         GlassBottomBar(
             selectedTab = selectedTab,
+            isScrolling = scrollState.isScrollInProgress,
             onTabSelected = { tab ->
                 selectedTab = tab
                 when (tab) {
@@ -256,7 +276,48 @@ fun HomeScreen(
 }
 
 // --------------------------------------------------
-// COMPONENT 1: TOP HEADER
+// COMPONENT 1: TOP HERO MEMBERSHIP CARD
+// --------------------------------------------------
+@Composable
+private fun TopHeroMembershipCard(
+    memberName: String,
+    status: MembershipStatus,
+    statusBarPadding: androidx.compose.ui.unit.Dp,
+    onProfileClick: () -> Unit,
+    onBrowsePlans: () -> Unit,
+    onManageMembership: () -> Unit
+) {
+    LiquidGlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp, topStart = 0.dp, topEnd = 0.dp),
+        shadowElevation = 0.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = statusBarPadding + 14.dp, bottom = 22.dp)
+                .padding(horizontal = 20.dp)
+        ) {
+            // Header Row: Greeting + Profile Avatar
+            HomeTopHeader(
+                memberName = memberName,
+                onProfileClick = onProfileClick
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Membership Status Content
+            MembershipStatusDetails(
+                status = status,
+                onBrowsePlans = onBrowsePlans,
+                onManageMembership = onManageMembership
+            )
+        }
+    }
+}
+
+// --------------------------------------------------
+// COMPONENT 2: TOP HEADER
 // --------------------------------------------------
 @Composable
 private fun HomeTopHeader(
@@ -284,20 +345,14 @@ private fun HomeTopHeader(
             )
         }
 
-        // Profile Avatar inside glass circular container
-        Box(
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .background(GlassSurfaceMedium)
-                .border(1.dp, GlassBorderSpecular, CircleShape)
-                .clickable { onProfileClick() }
-                .testTag("home_profile_avatar"),
-            contentAlignment = Alignment.Center
+        // Notification Icon without background
+        IconButton(
+            onClick = onProfileClick,
+            modifier = Modifier.testTag("home_notification_button")
         ) {
             Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Profile",
+                imageVector = Icons.Default.Notifications,
+                contentDescription = "Notifications",
                 tint = TextWhite,
                 modifier = Modifier.size(24.dp)
             )
@@ -306,232 +361,190 @@ private fun HomeTopHeader(
 }
 
 // --------------------------------------------------
-// --------------------------------------------------
-// COMPONENT 2: MEMBERSHIP STATUS CARD
+// COMPONENT 3: MEMBERSHIP STATUS DETAILS
 // --------------------------------------------------
 @Composable
-private fun MembershipStatusCard(
+private fun MembershipStatusDetails(
     status: MembershipStatus,
     onBrowsePlans: () -> Unit,
     onManageMembership: () -> Unit
 ) {
-    LiquidGlassCard(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp)
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(18.dp)
-        ) {
-            when (status) {
-                MembershipStatus.ACTIVE -> {
-                    // Header Row: "Your Membership" & "Active" Chip
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "YOUR MEMBERSHIP",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = TextSubtle,
-                            letterSpacing = 1.sp
-                        )
-
-                        // Active Status Indicator (dot + text only, no background/border)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .clip(CircleShape)
-                                    .background(NeonGreen)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "Active",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = NeonGreen
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    // Plan Title & Visits Left
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        Column {
-                            Text(
-                                text = "Byce Monthly",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = TextWhite
-                            )
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "Renews Oct 16",
-                                fontSize = 12.sp,
-                                color = TextMuted
-                            )
-                        }
-
-                        Text(
-                            text = "8 visits left",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = ByceGreen
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    // Progress indicator
-                    Column {
-                        LinearProgressIndicator(
-                            progress = { 8f / 12f },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(6.dp)
-                                .clip(CircleShape),
-                            color = ByceGreen,
-                            trackColor = Color(0x20FFFFFF)
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = "4 of 12 visits used this period",
-                            fontSize = 11.sp,
-                            color = TextSubtle
-                        )
-                    }
-                }
-
-                MembershipStatus.NO_MEMBERSHIP -> {
+        when (status) {
+            MembershipStatus.ACTIVE -> {
+                // Header Row: "Your Membership" & "Active" Chip
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
-                        text = "MEMBERSHIP STATUS",
+                        text = "YOUR MEMBERSHIP",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextSubtle,
                         letterSpacing = 1.sp
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "You don’t have a membership yet",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextWhite
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "Choose a plan to start training at Byce partner gyms.",
-                        fontSize = 13.sp,
-                        color = TextMuted
-                    )
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(42.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(ByceGreen)
-                            .clickable { onBrowsePlans() },
-                        contentAlignment = Alignment.Center
+                    // Active Status Indicator (dot + text only, no background/border)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .clip(CircleShape)
+                                .background(NeonGreen)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "Browse plans",
-                            fontSize = 14.sp,
+                            text = "Active",
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = DarkNavy
+                            color = NeonGreen
                         )
                     }
                 }
 
-                MembershipStatus.PAST_DUE -> {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "MEMBERSHIP NOTICE",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFF6B6B),
-                            letterSpacing = 1.sp
-                        )
+                Spacer(modifier = Modifier.height(10.dp))
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color(0x30FF6B6B))
-                                .padding(horizontal = 8.dp, vertical = 3.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Warning,
-                                contentDescription = null,
-                                tint = Color(0xFFFF6B6B),
-                                modifier = Modifier.size(12.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "Past Due",
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFFF6B6B)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                // Plan Title & Details
+                Column {
                     Text(
-                        text = "Payment past due",
-                        fontSize = 18.sp,
+                        text = "Byce Monthly",
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextWhite
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "Update your billing information to reactivate your gym access.",
-                        fontSize = 13.sp,
+                        text = "Renews Oct 16",
+                        fontSize = 12.sp,
                         color = TextMuted
                     )
+                }
+            }
 
-                    Spacer(modifier = Modifier.height(14.dp))
+            MembershipStatus.NO_MEMBERSHIP -> {
+                Text(
+                    text = "MEMBERSHIP STATUS",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextSubtle,
+                    letterSpacing = 1.sp
+                )
 
-                    Box(
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "You don’t have a membership yet",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Choose a plan to start training at Byce partner gyms.",
+                    fontSize = 13.sp,
+                    color = TextMuted
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(42.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(ByceGreen)
+                        .clickable { onBrowsePlans() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Browse plans",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = DarkNavy
+                    )
+                }
+            }
+
+            MembershipStatus.PAST_DUE -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "MEMBERSHIP NOTICE",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFF6B6B),
+                        letterSpacing = 1.sp
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(42.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFF2E1A1A))
-                            .border(1.dp, Color(0xFFFF6B6B), RoundedCornerShape(12.dp))
-                            .clickable { onManageMembership() },
-                        contentAlignment = Alignment.Center
+                            .background(Color(0x30FF6B6B))
+                            .padding(horizontal = 8.dp, vertical = 3.dp)
                     ) {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = null,
+                            tint = Color(0xFFFF6B6B),
+                            modifier = Modifier.size(12.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "Resolve payment issue",
-                            fontSize = 14.sp,
+                            text = "Past Due",
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFFF6B6B)
                         )
                     }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Payment past due",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextWhite
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Update your billing information to reactivate your gym access.",
+                    fontSize = 13.sp,
+                    color = TextMuted
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(42.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFF2E1A1A))
+                        .border(1.dp, Color(0xFFFF6B6B), RoundedCornerShape(12.dp))
+                        .clickable { onManageMembership() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Resolve payment issue",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFF6B6B)
+                    )
                 }
             }
         }
@@ -539,7 +552,7 @@ private fun MembershipStatusCard(
 }
 
 // --------------------------------------------------
-// COMPONENT 3: PRIMARY CHECK-IN ACTION
+// COMPONENT 4: PRIMARY CHECK-IN ACTION
 // --------------------------------------------------
 @Composable
 private fun PrimaryCheckInCard(
@@ -561,21 +574,13 @@ private fun PrimaryCheckInCard(
                     .padding(20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Clean Glass QR Container (no green background or border)
-                Box(
-                    modifier = Modifier
-                        .size(52.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0x15FFFFFF)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.QrCodeScanner,
-                        contentDescription = "Check in QR",
-                        tint = TextWhite,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
+                // Scanner Icon (no background)
+                Icon(
+                    imageVector = Icons.Default.QrCodeScanner,
+                    contentDescription = "Check in QR",
+                    tint = TextWhite,
+                    modifier = Modifier.size(30.dp)
+                )
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -614,20 +619,13 @@ private fun PrimaryCheckInCard(
                     .padding(18.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(46.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(Color(0x15FFFFFF)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.QrCodeScanner,
-                        contentDescription = null,
-                        tint = TextSubtle,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+                // Scanner Icon (no background)
+                Icon(
+                    imageVector = Icons.Default.QrCodeScanner,
+                    contentDescription = null,
+                    tint = TextSubtle,
+                    modifier = Modifier.size(28.dp)
+                )
 
                 Spacer(modifier = Modifier.width(14.dp))
 
@@ -667,7 +665,7 @@ private fun PrimaryCheckInCard(
 }
 
 // --------------------------------------------------
-// COMPONENT 4: NEARBY GYMS
+// COMPONENT 5: NEARBY GYMS
 // --------------------------------------------------
 @Composable
 private fun NearbyGymsSection(
@@ -747,7 +745,7 @@ private fun CompactGymCard(
                         .fillMaxSize()
                         .background(
                             Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color(0xAA090D1F))
+                                colors = listOf(Color.Transparent, Color(0xAA222021))
                             )
                         )
                 )
@@ -757,9 +755,9 @@ private fun CompactGymCard(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0xCC090D1F))
-                        .padding(horizontal = 8.dp, vertical = 3.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(Color(0xCC222021))
+                        .padding(horizontal = 9.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = gym.statusText,
@@ -808,15 +806,15 @@ private fun CompactGymCard(
 
                 // Facility tags
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     gym.tags.take(2).forEach { tag ->
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(6.dp))
+                                .clip(RoundedCornerShape(50.dp))
                                 .background(Color(0x1AFFFFFF))
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                                .padding(horizontal = 8.dp, vertical = 3.dp)
                         ) {
                             Text(
                                 text = tag,
@@ -832,7 +830,7 @@ private fun CompactGymCard(
 }
 
 // --------------------------------------------------
-// COMPONENT 5: RECENT ACTIVITY
+// COMPONENT 6: RECENT ACTIVITY
 // --------------------------------------------------
 @Composable
 private fun RecentActivitySection(
@@ -846,7 +844,7 @@ private fun RecentActivitySection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Recent activity",
+                text = "Recent visits",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextWhite
@@ -881,20 +879,14 @@ private fun RecentActivitySection(
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
+                        Image(
+                            painter = painterResource(id = visit.imageRes),
+                            contentDescription = visit.gymName,
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(40.dp)
                                 .clip(CircleShape)
-                                .background(Color(0x1AA6CE39)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.FitnessCenter,
-                                contentDescription = null,
-                                tint = ByceGreen,
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
+                        )
 
                         Spacer(modifier = Modifier.width(12.dp))
 
@@ -913,29 +905,11 @@ private fun RecentActivitySection(
                             )
                         }
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .clip(CircleShape)
-                                    .background(NeonGreen)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = visit.status,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = TextMuted
-                            )
-                        }
-                    }
-
-                    if (index < visits.size - 1) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(Color(0x10FFFFFF))
+                        Text(
+                            text = visit.status,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TextMuted
                         )
                     }
                 }
@@ -945,14 +919,21 @@ private fun RecentActivitySection(
 }
 
 // --------------------------------------------------
-// COMPONENT 6: TRANSLUCENT GLASS BOTTOM BAR
+// COMPONENT 7: TRANSLUCENT GLASS BOTTOM BAR
 // --------------------------------------------------
 @Composable
 fun GlassBottomBar(
     selectedTab: String,
     onTabSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isScrolling: Boolean = false
 ) {
+    val borderAlpha by animateFloatAsState(
+        targetValue = if (isScrolling) 0f else 1f,
+        animationSpec = tween(durationMillis = 250),
+        label = "nav_border_alpha"
+    )
+
     val navItems = listOf(
         NavItem("Home", Icons.Default.Home),
         NavItem("Discover", Icons.Default.Search),
@@ -960,14 +941,55 @@ fun GlassBottomBar(
         NavItem("Profile", Icons.Default.Person)
     )
 
-    LiquidGlassCard(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 0.dp, bottomEnd = 0.dp),
-        backgroundColor = Color(0xF2181E32),
-        borderColor = Color(0x44FFFFFF),
-        borderWidth = 1.dp,
-        shadowElevation = 20.dp
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xF0222021),
+                        Color(0xF8161415),
+                        Color(0xFF161415)
+                    )
+                )
+            )
+            .then(
+                if (borderAlpha > 0.001f) {
+                    Modifier.border(
+                        width = 0.5.dp,
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0x25FFFFFF).copy(alpha = 0.25f * borderAlpha),
+                                Color(0x08FFFFFF).copy(alpha = 0.08f * borderAlpha)
+                            )
+                        ),
+                        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
+                    )
+                } else Modifier
+            )
     ) {
+        // Specular highlight at top
+        if (borderAlpha > 0.001f) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .align(Alignment.TopCenter)
+                    .background(
+                        Brush.horizontalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color(0x25FFFFFF).copy(alpha = 0.25f * borderAlpha),
+                                Color(0x50FFFFFF).copy(alpha = 0.5f * borderAlpha),
+                                Color(0x25FFFFFF).copy(alpha = 0.25f * borderAlpha),
+                                Color.Transparent
+                            )
+                        )
+                    )
+            )
+        }
+        
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -988,7 +1010,7 @@ fun GlassBottomBar(
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.label,
-                        tint = if (isSelected) Color.White else Color(0xFF8A92A6),
+                        tint = if (isSelected) TextWhite else TextSubtle,
                         modifier = Modifier.size(24.dp)
                     )
 
@@ -999,7 +1021,7 @@ fun GlassBottomBar(
                         modifier = Modifier
                             .size(4.dp)
                             .clip(CircleShape)
-                            .background(if (isSelected) Color.White else Color.Transparent)
+                            .background(if (isSelected) NeonGreen else Color.Transparent)
                     )
                 }
             }

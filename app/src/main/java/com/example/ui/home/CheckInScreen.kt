@@ -92,7 +92,7 @@ fun CheckInScreen(
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(DarkNavy, DarkNavyDepth, Color(0xFF0C1022))
+                    colors = listOf(DarkNavy, DarkNavyDepth, Color(0xFF161415))
                 )
             )
             .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 16.dp)
