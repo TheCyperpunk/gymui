@@ -91,6 +91,8 @@ import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.components.LiquidGlassCard
 import com.example.ui.components.LiquidGlassTextField
 import com.example.ui.theme.DarkNavy
+import com.example.ui.theme.GlassBorderLight
+import com.example.ui.theme.GlassSurfaceMedium
 
 /**
  * Screen for Discover Nearby Gyms.
@@ -226,9 +228,10 @@ private fun DiscoverDefaultView(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFF2A292A))
+                        .background(GlassSurfaceMedium)
+                        .border(1.dp, GlassBorderLight, CircleShape)
                         .clickable { onBackClick() },
                     contentAlignment = Alignment.Center
                 ) {

@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.components.LiquidGlassButton
+import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.components.LiquidGlassCard
 import com.example.ui.theme.ByceGreen
 import com.example.ui.theme.DarkNavy
@@ -76,6 +77,8 @@ fun GymDetailScreen(
             .fillMaxSize()
             .background(DarkNavy)
     ) {
+        // Cult.fit Aurora Animated Ambient Lighting
+        FloatingBlurBalls()
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -69,36 +69,36 @@ fun FloatingBlurBalls(
         val rad3 = Math.toRadians(angle3.toDouble())
 
         // ----------------------------------------------------
-        // 1. MINT CYAN ORB (Fast Top-Left Orbit)
+        // 1. MINT CYAN ORB (Fast Top-Left & Header Orbit)
         // ----------------------------------------------------
-        val orb1X = width * 0.28f + (sin(rad1) * 130f).toFloat()
-        val orb1Y = height * 0.22f + (cos(rad1) * 110f).toFloat()
+        val orb1X = width * 0.32f + (sin(rad1) * 140f).toFloat()
+        val orb1Y = height * 0.08f + (cos(rad1) * 100f).toFloat()
         drawAuroraOrb(
             center = Offset(orb1X, orb1Y),
-            radius = width * 0.72f,
-            color = Color(0x482DD4BF) // Cult.fit Mint Teal
+            radius = width * 0.85f,
+            color = Color(0x4E2DD4BF) // Cult.fit Mint Teal - Reaches top status bar & header
         )
 
         // ----------------------------------------------------
         // 2. ELECTRIC LIME ORB (Fast Mid-Right Orbit)
         // ----------------------------------------------------
-        val orb2X = width * 0.74f + (cos(rad2) * 125f).toFloat()
-        val orb2Y = height * 0.48f + (sin(rad2) * 105f).toFloat()
+        val orb2X = width * 0.72f + (cos(rad2) * 135f).toFloat()
+        val orb2Y = height * 0.40f + (sin(rad2) * 115f).toFloat()
         drawAuroraOrb(
             center = Offset(orb2X, orb2Y),
-            radius = width * 0.68f,
-            color = Color(0x42A6CE39) // Cult.fit Neon Lime Green
+            radius = width * 0.78f,
+            color = Color(0x45A6CE39) // Cult.fit Neon Lime Green
         )
 
         // ----------------------------------------------------
-        // 3. CYBER SKY BLUE ORB (Fast Bottom-Center Orbit)
+        // 3. CYBER SKY BLUE ORB (Fast Lower-Center Orbit)
         // ----------------------------------------------------
-        val orb3X = width * 0.38f + (sin(rad3) * 140f).toFloat()
-        val orb3Y = height * 0.78f + (cos(rad3) * 120f).toFloat()
+        val orb3X = width * 0.38f + (sin(rad3) * 150f).toFloat()
+        val orb3Y = height * 0.75f + (cos(rad3) * 125f).toFloat()
         drawAuroraOrb(
             center = Offset(orb3X, orb3Y),
-            radius = width * 0.75f,
-            color = Color(0x450EA5E9) // Cult.fit Electric Sky Blue
+            radius = width * 0.82f,
+            color = Color(0x480EA5E9) // Cult.fit Electric Sky Blue
         )
     }
 }

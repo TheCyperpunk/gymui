@@ -50,7 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.R
+import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.components.LiquidGlassButton
 import com.example.ui.components.LiquidGlassSegmentedControl
 import com.example.ui.components.LiquidGlassTextField
@@ -118,17 +118,11 @@ fun AuthScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        DarkNavy,
-                        DarkNavyDepth,
-                        DarkNavy
-                    )
-                )
-            )
+            .background(DarkNavy)
             .testTag("user_auth_screen_container")
     ) {
+        // Cult.fit Aurora Animated Ambient Lighting
+        FloatingBlurBalls()
 
         Column(
             modifier = Modifier

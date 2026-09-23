@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.components.LiquidGlassButton
+import com.example.ui.components.FloatingBlurBalls
 import com.example.ui.components.LiquidGlassCard
 import com.example.ui.theme.ByceGreen
 import com.example.ui.theme.DarkNavy
@@ -90,16 +91,16 @@ fun CheckInScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(DarkNavy, DarkNavyDepth, Color(0xFF161415))
-                )
-            )
-            .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 16.dp)
-            .padding(horizontal = 20.dp)
+            .background(DarkNavy)
     ) {
+        // Cult.fit Aurora Animated Ambient Lighting
+        FloatingBlurBalls()
+
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = statusBarPadding + 12.dp, bottom = navBarPadding + 16.dp)
+                .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Header Row
