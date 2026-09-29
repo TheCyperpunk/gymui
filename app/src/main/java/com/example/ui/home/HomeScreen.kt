@@ -1,4 +1,4 @@
-package com.example.ui.home
+﻿package com.example.ui.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -115,78 +115,492 @@ data class VisitLog(
 )
 
 // Sample Data
+// Sample Data - 40 Gyms across Ernakulam, Kozhikode, and Thrissur
 val SAMPLE_GYMS = listOf(
+    // Ernakulam (Kochi) - 20 locations
     GymLocation(
         id = "1",
-        name = "Pulse Fitness",
-        distance = "1.2 km away",
-        cityArea = "Downtown · SF",
+        name = "Gold's Gym Kochi",
+        distance = "0.8 km away",
+        cityArea = "MG Road · Ernakulam",
         imageRes = R.drawable.pulse_fitness_gym_1789554105342,
-        tags = listOf("Free weights", "Classes", "Sauna"),
-        statusText = "Open · Quiet now",
-        latitude = 37.789172,
-        longitude = -122.401449,
+        tags = listOf("Cardio", "Weights", "Steam Room"),
+        statusText = "Open · Busy",
+        latitude = 9.9674,
+        longitude = 76.2814,
         rating = 4.9
     ),
     GymLocation(
         id = "2",
-        name = "Iron Vault Gym",
-        distance = "2.5 km away",
-        cityArea = "SoMa · SF",
+        name = "Talwalkars Gym",
+        distance = "1.4 km away",
+        cityArea = "Palarivattom · Ernakulam",
         imageRes = R.drawable.iron_vault_gym_1789554122844,
-        tags = listOf("Heavy lifting", "Sauna", "Turf"),
+        tags = listOf("CrossFit", "Zumba", "Personal Training"),
         statusText = "Open · Moderate crowd",
-        latitude = 37.778519,
-        longitude = -122.395232,
-        rating = 4.8
-    ),
-    GymLocation(
-        id = "3",
-        name = "Zenith Health Club",
-        distance = "3.8 km away",
-        cityArea = "Marina · SF",
-        imageRes = R.drawable.zenith_health_club_1789554140602,
-        tags = listOf("Cardio deck", "Pool", "Yoga"),
-        statusText = "Open 24/7",
-        latitude = 37.800542,
-        longitude = -122.436128,
+        latitude = 10.0059,
+        longitude = 76.3104,
         rating = 4.7
     ),
     GymLocation(
-        id = "4",
-        name = "Apex Strength & Conditioning",
-        distance = "1.8 km away",
-        cityArea = "Mission · SF",
-        imageRes = R.drawable.img_gym_interior,
-        tags = listOf("Free weights", "Heavy lifting", "Classes"),
-        statusText = "Open · Moderate crowd",
-        latitude = 37.765120,
-        longitude = -122.419900,
-        rating = 4.9
-    ),
-    GymLocation(
-        id = "5",
-        name = "Velocity Athletic Club",
-        distance = "2.9 km away",
-        cityArea = "Nob Hill · SF",
-        imageRes = R.drawable.img_gym_reception,
-        tags = listOf("Sauna", "Classes", "Open 24/7"),
+        id = "3",
+        name = "Fitness Factory",
+        distance = "2.2 km away",
+        cityArea = "Edappally · Ernakulam",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Aerobics", "Pilates", "Sauna"),
         statusText = "Open 24/7",
-        latitude = 37.793200,
-        longitude = -122.416800,
+        latitude = 10.0216,
+        longitude = 76.3082,
         rating = 4.8
     ),
     GymLocation(
-        id = "6",
-        name = "Titan Powerhouse",
-        distance = "4.2 km away",
-        cityArea = "Potrero · SF",
-        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
-        tags = listOf("Free weights", "Turf", "Heavy lifting"),
-        statusText = "Open · Quiet now",
-        latitude = 37.759800,
-        longitude = -122.398500,
+        id = "4",
+        name = "Snap Fitness",
+        distance = "1.9 km away",
+        cityArea = "Kakkanad · Ernakulam",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("24/7 Access", "Personal Training", "Cardio"),
+        statusText = "Open 24/7",
+        latitude = 10.0161,
+        longitude = 76.3516,
         rating = 4.6
+    ),
+    GymLocation(
+        id = "5",
+        name = "The Gym Company",
+        distance = "1.1 km away",
+        cityArea = "Marine Drive · Ernakulam",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("Functional Training", "Yoga", "Nutrition"),
+        statusText = "Open · Quiet now",
+        latitude = 9.9654,
+        longitude = 76.2845,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "6",
+        name = "Anytime Fitness",
+        distance = "2.7 km away",
+        cityArea = "Vytilla · Ernakulam",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("24/7 Access", "Virtual Training", "Shower"),
+        statusText = "Open 24/7",
+        latitude = 9.9649,
+        longitude = 76.3256,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "7",
+        name = "Body Fuel Gym",
+        distance = "1.6 km away",
+        cityArea = "Panampilly Nagar · Ernakulam",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Bodybuilding", "Crossfit", "Boxing"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9678,
+        longitude = 76.2903,
+        rating = 4.5
+    ),
+    GymLocation(
+        id = "8",
+        name = "Cult.fit",
+        distance = "2.0 km away",
+        cityArea = "Kaloor · Ernakulam",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("HIIT", "Yoga", "Dance Fitness"),
+        statusText = "Open · Busy",
+        latitude = 10.0055,
+        longitude = 76.2946,
+        rating = 4.9
+    ),
+    GymLocation(
+        id = "9",
+        name = "Iron Core Fitness",
+        distance = "3.1 km away",
+        cityArea = "Aluva · Ernakulam",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("Strength Training", "Cardio", "Steam"),
+        statusText = "Open · Quiet now",
+        latitude = 10.1067,
+        longitude = 76.3523,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "10",
+        name = "FitStop Gym",
+        distance = "1.3 km away",
+        cityArea = "Fort Kochi · Ernakulam",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("Functional Training", "TRX", "Spinning"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9656,
+        longitude = 76.2427,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "11",
+        name = "PowerZone Fitness",
+        distance = "2.3 km away",
+        cityArea = "Vennala · Ernakulam",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Strength Training", "CrossFit", "Steam"),
+        statusText = "Open · Busy",
+        latitude = 9.9930,
+        longitude = 76.3248,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "12",
+        name = "Elite Sports Hub",
+        distance = "1.7 km away",
+        cityArea = "Kadavanthra · Ernakulam",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Swimming", "Gym", "Badminton"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9686,
+        longitude = 76.2963,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "13",
+        name = "Muscle Factory",
+        distance = "2.8 km away",
+        cityArea = "Thrikkakara · Ernakulam",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Bodybuilding", "Powerlifting", "Nutrition"),
+        statusText = "Open · Quiet now",
+        latitude = 10.0143,
+        longitude = 76.3409,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "14",
+        name = "Velocity Gym",
+        distance = "1.5 km away",
+        cityArea = "Palarivattom · Ernakulam",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("HIIT", "Cardio", "Yoga"),
+        statusText = "Open 24/7",
+        latitude = 10.0040,
+        longitude = 76.3061,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "15",
+        name = "FitCo Arena",
+        distance = "2.1 km away",
+        cityArea = "Ernakulam South · Ernakulam",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("CrossFit", "Boxing", "MMA"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9738,
+        longitude = 76.2907,
+        rating = 4.5
+    ),
+    GymLocation(
+        id = "16",
+        name = "Titan Fitness Studio",
+        distance = "3.0 km away",
+        cityArea = "Infopark · Ernakulam",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Functional Training", "Pilates", "Spinning"),
+        statusText = "Open · Busy",
+        latitude = 10.0196,
+        longitude = 76.3663,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "17",
+        name = "Beast Mode Gym",
+        distance = "1.8 km away",
+        cityArea = "Broadway · Ernakulam",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Heavy Lifting", "Strength", "Steam"),
+        statusText = "Open · Quiet now",
+        latitude = 9.9735,
+        longitude = 76.2831,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "18",
+        name = "Core Strength Center",
+        distance = "2.5 km away",
+        cityArea = "Eroor · Ernakulam",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Functional Training", "Yoga", "Cardio"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9450,
+        longitude = 76.3100,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "19",
+        name = "Alpha Fitness",
+        distance = "1.9 km away",
+        cityArea = "Thevara · Ernakulam",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("Cardio", "Weights", "Sauna"),
+        statusText = "Open · Busy",
+        latitude = 9.9637,
+        longitude = 76.2959,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "20",
+        name = "Ultimate Gym",
+        distance = "2.6 km away",
+        cityArea = "Petta · Ernakulam",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("CrossFit", "Zumba", "Personal Training"),
+        statusText = "Open · Moderate crowd",
+        latitude = 9.9841,
+        longitude = 76.2881,
+        rating = 4.6
+    ),
+
+    // Kozhikode - 12 locations
+    GymLocation(
+        id = "21",
+        name = "Transform Fitness Studio",
+        distance = "1.0 km away",
+        cityArea = "Mavoor Road · Kozhikode",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Personal Training", "Nutrition", "Cardio"),
+        statusText = "Open · Busy",
+        latitude = 11.2588,
+        longitude = 75.7804,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "22",
+        name = "Steel Fitness",
+        distance = "2.4 km away",
+        cityArea = "Puthiyara · Kozhikode",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Weightlifting", "Powerlifting", "Steam"),
+        statusText = "Open · Moderate crowd",
+        latitude = 11.2705,
+        longitude = 75.7873,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "23",
+        name = "Fitness First",
+        distance = "1.7 km away",
+        cityArea = "Beach Road · Kozhikode",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Yoga", "Pilates", "Swimming"),
+        statusText = "Open · Quiet now",
+        latitude = 11.2474,
+        longitude = 75.7804,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "24",
+        name = "Powerzone Gym",
+        distance = "2.9 km away",
+        cityArea = "Medical College · Kozhikode",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("Bodybuilding", "CrossFit", "Zumba"),
+        statusText = "Open · Moderate crowd",
+        latitude = 11.2633,
+        longitude = 75.7934,
+        rating = 4.5
+    ),
+    GymLocation(
+        id = "25",
+        name = "Velocity Fitness",
+        distance = "1.5 km away",
+        cityArea = "Hilite Mall · Kozhikode",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("HIIT", "Functional Training", "Sauna"),
+        statusText = "Open 24/7",
+        latitude = 11.2432,
+        longitude = 75.7991,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "26",
+        name = "Iron Paradise Gym",
+        distance = "2.1 km away",
+        cityArea = "Kannur Road · Kozhikode",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Strength Training", "Boxing", "MMA"),
+        statusText = "Open · Busy",
+        latitude = 11.2754,
+        longitude = 75.7836,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "27",
+        name = "Body Sculpt Studio",
+        distance = "1.8 km away",
+        cityArea = "Palazhi · Kozhikode",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Aerobics", "Dance", "Cardio"),
+        statusText = "Open · Moderate crowd",
+        latitude = 11.2412,
+        longitude = 75.7666,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "28",
+        name = "Apex Fitness Center",
+        distance = "2.3 km away",
+        cityArea = "Chevayur · Kozhikode",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Gym", "Yoga", "Spa"),
+        statusText = "Open · Quiet now",
+        latitude = 11.2840,
+        longitude = 75.7733,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "29",
+        name = "Elite Gym Club",
+        distance = "1.4 km away",
+        cityArea = "West Hill · Kozhikode",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("CrossFit", "Weights", "Steam"),
+        statusText = "Open · Busy",
+        latitude = 11.2524,
+        longitude = 75.7695,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "30",
+        name = "FitZone Arena",
+        distance = "2.7 km away",
+        cityArea = "Meenchanda · Kozhikode",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("Functional Training", "HIIT", "Sauna"),
+        statusText = "Open · Moderate crowd",
+        latitude = 11.2667,
+        longitude = 75.8033,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "31",
+        name = "Core Fitness Hub",
+        distance = "1.6 km away",
+        cityArea = "Bilathikulam · Kozhikode",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Pilates", "Yoga", "Cardio"),
+        statusText = "Open · Quiet now",
+        latitude = 11.2487,
+        longitude = 75.7931,
+        rating = 4.5
+    ),
+    GymLocation(
+        id = "32",
+        name = "Titan Gym Kozhikode",
+        distance = "2.2 km away",
+        cityArea = "Arayidathupalam · Kozhikode",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Bodybuilding", "Powerlifting", "Nutrition"),
+        statusText = "Open · Moderate crowd",
+        latitude = 11.2811,
+        longitude = 75.7954,
+        rating = 4.7
+    ),
+
+    // Thrissur - 8 locations
+    GymLocation(
+        id = "33",
+        name = "Muscle Factory",
+        distance = "1.2 km away",
+        cityArea = "Round South · Thrissur",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Bodybuilding", "Powerlifting", "Nutrition"),
+        statusText = "Open · Busy",
+        latitude = 10.5276,
+        longitude = 76.2144,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "34",
+        name = "FitCo Gym",
+        distance = "2.1 km away",
+        cityArea = "Punkunnam · Thrissur",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("CrossFit", "Cardio", "Personal Training"),
+        statusText = "Open · Moderate crowd",
+        latitude = 10.5201,
+        longitude = 76.2132,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "35",
+        name = "Wellness Hub",
+        distance = "1.8 km away",
+        cityArea = "Ollur · Thrissur",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Yoga", "Meditation", "Spa"),
+        statusText = "Open · Quiet now",
+        latitude = 10.5430,
+        longitude = 76.2136,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "36",
+        name = "Alpha Fitness Thrissur",
+        distance = "2.5 km away",
+        cityArea = "Ayyanthole · Thrissur",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("Strength Training", "HIIT", "Steam"),
+        statusText = "Open · Moderate crowd",
+        latitude = 10.5333,
+        longitude = 76.2186,
+        rating = 4.5
+    ),
+    GymLocation(
+        id = "37",
+        name = "PowerHouse Fitness",
+        distance = "1.5 km away",
+        cityArea = "Kokkalai · Thrissur",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("Weights", "Cardio", "Boxing"),
+        statusText = "Open · Busy",
+        latitude = 10.5233,
+        longitude = 76.2095,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "38",
+        name = "Beast Mode Fitness",
+        distance = "2.3 km away",
+        cityArea = "Viyyur · Thrissur",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Heavy Lifting", "CrossFit", "MMA"),
+        statusText = "Open · Moderate crowd",
+        latitude = 10.5657,
+        longitude = 76.2238,
+        rating = 4.6
+    ),
+    GymLocation(
+        id = "39",
+        name = "Elite Sports Arena",
+        distance = "1.9 km away",
+        cityArea = "Thrissur Town · Thrissur",
+        imageRes = R.drawable.zenith_health_club_1789554140602,
+        tags = listOf("Swimming", "Badminton", "Gym"),
+        statusText = "Open 24/7",
+        latitude = 10.5261,
+        longitude = 76.2110,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "40",
+        name = "Iron Core Gym",
+        distance = "2.7 km away",
+        cityArea = "Mannuthy · Thrissur",
+        imageRes = R.drawable.iron_vault_gym_1789554122844,
+        tags = listOf("Functional Training", "Strength", "Sauna"),
+        statusText = "Open · Quiet now",
+        latitude = 10.5386,
+        longitude = 76.2311,
+        rating = 4.7
     )
 )
 
@@ -197,7 +611,7 @@ val SAMPLE_VISITS = listOf(
 )
 
 /**
- * Screen 3 — Home for Byce Member App
+ * Screen 3 â€” Home for Byce Member App
  */
 @Composable
 fun HomeScreen(
@@ -480,7 +894,7 @@ private fun MembershipStatusDetails(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "You don’t have a membership yet",
+                    text = "You donâ€™t have a membership yet",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
@@ -835,7 +1249,7 @@ private fun CompactGymCard(
                     )
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(
-                        text = "${gym.distance} · ${gym.cityArea}",
+                        text = "${gym.distance} Â· ${gym.cityArea}",
                         fontSize = 11.sp,
                         color = TextSubtle,
                         maxLines = 1,
@@ -940,7 +1354,7 @@ private fun RecentActivitySection(
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
-                                text = "${visit.dateText} · ${visit.timeText}",
+                                text = "${visit.dateText} Â· ${visit.timeText}",
                                 fontSize = 11.sp,
                                 color = TextSubtle
                             )
@@ -1072,4 +1486,5 @@ fun GlassBottomBar(
 }
 
 private data class NavItem(val label: String, val icon: ImageVector)
+
 
