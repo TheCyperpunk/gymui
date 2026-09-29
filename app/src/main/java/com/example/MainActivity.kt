@@ -32,7 +32,9 @@ enum class AppScreen {
     NOTIFICATION_SETTINGS,
     HELP_CENTER,
     MEMBERSHIP_HISTORY,
-    PRIVACY_SECURITY
+    PRIVACY_SECURITY,
+    EDIT_PROFILE,
+    APPEARANCE
 }
 
 class MainActivity : ComponentActivity() {
@@ -210,9 +212,28 @@ class MainActivity : ComponentActivity() {
                   currentScreen = AppScreen.MEMBERSHIP_HISTORY
                 },
                 onNavigateToPrivacySecurity = {
-                  currentScreen = AppScreen.PRIVACY_SECURITY
+                  currentScreen = AppScreen.PRIVACY_SECURITY,
+    EDIT_PROFILE,
+    APPEARANCE
                 },
                 modifier = Modifier.fillMaxSize()
+              )
+            }
+            AppScreen.EDIT_PROFILE -> {
+              EditProfileScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                },
+                onSaveClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.APPEARANCE -> {
+              AppearanceScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
               )
             }
             AppScreen.VISIT_HISTORY -> {
@@ -258,8 +279,27 @@ class MainActivity : ComponentActivity() {
                 }
               )
             }
-            AppScreen.PRIVACY_SECURITY -> {
+            AppScreen.PRIVACY_SECURITY,
+    EDIT_PROFILE,
+    APPEARANCE -> {
               PrivacySecurityScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.EDIT_PROFILE -> {
+              EditProfileScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                },
+                onSaveClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.APPEARANCE -> {
+              AppearanceScreen(
                 onBackClick = {
                   currentScreen = AppScreen.PROFILE
                 }
@@ -271,3 +311,5 @@ class MainActivity : ComponentActivity() {
     }
   }
 }
+
+

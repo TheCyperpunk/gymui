@@ -104,6 +104,8 @@ fun ProfileScreen(
     onNavigateToHelpCenter: () -> Unit = {},
     onNavigateToMembershipHistory: () -> Unit = {},
     onNavigateToPrivacySecurity: () -> Unit = {},
+    onNavigateToEditProfile: () -> Unit = {},
+    onNavigateToAppearance: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -466,9 +468,15 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 ProfileOptionItem(
+
                     icon = Icons.Default.Edit,
+
                     title = "Edit Profile",
-                    subtitle = "Update your name, photo & contact"
+
+                    subtitle = "Update your name, photo & contact",
+
+                    onClick = onNavigateToEditProfile
+
                 )
                 ProfileOptionItem(
 
@@ -598,9 +606,15 @@ fun ProfileScreen(
                     subtitle = "English (US) • Kerala, India"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.DarkMode,
+
                     title = "Appearance",
-                    subtitle = "Theme: Dark • Auto-adjust brightness"
+
+                    subtitle = "Theme: Dark • Auto-adjust brightness",
+
+                    onClick = onNavigateToAppearance
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.MobileFriendly,
@@ -970,4 +984,5 @@ private fun StatItem(
         )
     }
 }
+
 
