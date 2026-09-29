@@ -1,4 +1,4 @@
-package com.example.ui.home
+﻿package com.example.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,9 +26,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -110,7 +120,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Profile Avatar & Info (Direct on background without card)
+            // Profile Avatar & Info
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -150,11 +160,63 @@ fun ProfileScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Membership Status Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(GlassSurfaceMedium)
+                    .border(1.dp, GlassBorderLight, RoundedCornerShape(16.dp))
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "Premium Member",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = ByceGreen
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Valid until Dec 31, 2024",
+                                fontSize = 12.sp,
+                                color = TextSubtle
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = ByceGreen,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        StatItem(value = "47", label = "Check-ins")
+                        StatItem(value = "12", label = "Gyms Visited")
+                        StatItem(value = "18", label = "Classes")
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Settings Options List (Direct on background without card container)
+            // Account Settings Section
             Text(
-                text = "Account Settings",
+                text = "Account",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextWhite
@@ -167,25 +229,101 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 ProfileOptionItem(
+                    icon = Icons.Default.Edit,
+                    title = "Edit Profile",
+                    subtitle = "Update your name, photo & contact"
+                )
+                ProfileOptionItem(
                     icon = Icons.Default.Badge,
                     title = "Member Credential Pass",
                     subtitle = "BYCE-9842-7104"
                 )
+                ProfileOptionItem(
+                    icon = Icons.Default.Payment,
+                    title = "Payment Methods",
+                    subtitle = "Manage cards & billing info"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.History,
+                    title = "Membership History",
+                    subtitle = "View past memberships & renewals"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Preferences Section
+            Text(
+                text = "Preferences",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = TextWhite
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 ProfileOptionItem(
                     icon = Icons.Default.Notifications,
                     title = "Notifications",
                     subtitle = "Push alerts & visit updates"
                 )
                 ProfileOptionItem(
+                    icon = Icons.Default.Language,
+                    title = "Language & Region",
+                    subtitle = "English (US)"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Settings,
+                    title = "App Settings",
+                    subtitle = "Display, theme & preferences"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Support & Info Section
+            Text(
+                text = "Support & Info",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = TextWhite
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                ProfileOptionItem(
+                    icon = Icons.Default.Help,
+                    title = "Help Center",
+                    subtitle = "FAQs, support & contact us"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Share,
+                    title = "Invite Friends",
+                    subtitle = "Share Byce with your friends"
+                )
+                ProfileOptionItem(
                     icon = Icons.Default.Lock,
                     title = "Privacy & Security",
                     subtitle = "Terms, privacy policy & permissions"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Info,
+                    title = "About Byce",
+                    subtitle = "Version 1.0.0 • Learn more"
                 )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Logout button (Clean text button without icon or background)
+            // Logout button
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -263,6 +401,29 @@ private fun ProfileOptionItem(
             contentDescription = null,
             tint = TextSubtle,
             modifier = Modifier.size(20.dp)
+        )
+    }
+}
+
+@Composable
+private fun StatItem(
+    value: String,
+    label: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = value,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = ByceGreen
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            color = TextSubtle
         )
     }
 }
