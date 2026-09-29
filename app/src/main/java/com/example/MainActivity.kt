@@ -212,28 +212,15 @@ class MainActivity : ComponentActivity() {
                   currentScreen = AppScreen.MEMBERSHIP_HISTORY
                 },
                 onNavigateToPrivacySecurity = {
-                  currentScreen = AppScreen.PRIVACY_SECURITY,
-    EDIT_PROFILE,
-    APPEARANCE
+                  currentScreen = AppScreen.PRIVACY_SECURITY
+                },
+                onNavigateToEditProfile = {
+                  currentScreen = AppScreen.EDIT_PROFILE
+                },
+                onNavigateToAppearance = {
+                  currentScreen = AppScreen.APPEARANCE
                 },
                 modifier = Modifier.fillMaxSize()
-              )
-            }
-            AppScreen.EDIT_PROFILE -> {
-              EditProfileScreen(
-                onBackClick = {
-                  currentScreen = AppScreen.PROFILE
-                },
-                onSaveClick = {
-                  currentScreen = AppScreen.PROFILE
-                }
-              )
-            }
-            AppScreen.APPEARANCE -> {
-              AppearanceScreen(
-                onBackClick = {
-                  currentScreen = AppScreen.PROFILE
-                }
               )
             }
             AppScreen.VISIT_HISTORY -> {
@@ -279,9 +266,7 @@ class MainActivity : ComponentActivity() {
                 }
               )
             }
-            AppScreen.PRIVACY_SECURITY,
-    EDIT_PROFILE,
-    APPEARANCE -> {
+            AppScreen.PRIVACY_SECURITY -> {
               PrivacySecurityScreen(
                 onBackClick = {
                   currentScreen = AppScreen.PROFILE
@@ -311,5 +296,3 @@ class MainActivity : ComponentActivity() {
     }
   }
 }
-
-

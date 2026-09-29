@@ -111,7 +111,7 @@ fun HelpCenterScreen(
             )
 
             ContactOptionCard(
-                icon = Icons.Default.WhatsApp,
+                icon = Icons.Default.Message,
                 title = "WhatsApp",
                 subtitle = "+91 98765 43210",
                 isAvailable = true,
@@ -344,3 +344,4 @@ private fun QuickActionButton(
     
     Spacer(modifier = Modifier.height(8.dp))
 }
+

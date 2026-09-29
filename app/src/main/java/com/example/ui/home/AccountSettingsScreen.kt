@@ -155,7 +155,7 @@ fun AccountSettingsScreen(
                 onClick = {}
             )
             SettingsDetailItem(
-                icon = Icons.Default.LoginRounded,
+                icon = Icons.Default.Login,
                 title = "Login History",
                 value = "View recent logins",
                 onClick = {}
@@ -180,13 +180,13 @@ fun AccountSettingsScreen(
                 onClick = {}
             )
             SettingsDetailItem(
-                icon = Icons.Default.Apple,
+                icon = Icons.Default.AccountCircle,
                 title = "Apple",
                 value = "Not connected",
                 onClick = {}
             )
             SettingsDetailItem(
-                icon = Icons.Default.Facebook,
+                icon = Icons.Default.AccountCircle,
                 title = "Facebook",
                 value = "Not connected",
                 onClick = {}
@@ -275,3 +275,4 @@ private fun SettingsDetailItem(
     
     Spacer(modifier = Modifier.height(8.dp))
 }
+
