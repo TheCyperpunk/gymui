@@ -26,20 +26,29 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,7 +67,7 @@ import com.example.ui.theme.TextSubtle
 import com.example.ui.theme.TextWhite
 
 /**
- * Screen for Member Profile
+ * Screen for Member Profile - Enhanced with detailed information
  */
 @Composable
 fun ProfileScreen(
@@ -120,33 +129,55 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Profile Avatar & Info
+            // Profile Avatar & Info with Edit Button
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(GlassSurfaceMedium),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Avatar",
-                        tint = TextWhite,
-                        modifier = Modifier.size(44.dp)
-                    )
+                Box {
+                    Box(
+                        modifier = Modifier
+                            .size(90.dp)
+                            .clip(CircleShape)
+                            .background(GlassSurfaceMedium)
+                            .border(3.dp, ByceGreen, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Avatar",
+                            tint = TextWhite,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                    
+                    // Edit button overlay
+                    Box(
+                        modifier = Modifier
+                            .size(28.dp)
+                            .align(Alignment.BottomEnd)
+                            .clip(CircleShape)
+                            .background(ByceGreen)
+                            .clickable { }
+                            .border(2.dp, DarkNavy, CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = Color.Black,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "Alex Morgan",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextWhite
                 )
@@ -154,15 +185,52 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "+1 (555) 234-5678 · Member since 2024",
+                    text = "Fitness Enthusiast",
                     fontSize = 13.sp,
+                    color = ByceGreen,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "Member since January 2024",
+                    fontSize = 12.sp,
                     color = TextSubtle
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Membership Status Card
+            // Personal Details Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(GlassSurfaceMedium)
+                    .border(1.dp, GlassBorderLight, RoundedCornerShape(16.dp))
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Text(
+                        text = "Personal Information",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextWhite
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    DetailRow(icon = Icons.Default.Email, label = "Email", value = "alex.morgan@email.com")
+                    DetailRow(icon = Icons.Default.Phone, label = "Phone", value = "+1 (555) 234-5678")
+                    DetailRow(icon = Icons.Default.LocationOn, label = "Location", value = "Kochi, Kerala")
+                    DetailRow(icon = Icons.Default.CalendarMonth, label = "Date of Birth", value = "March 15, 1995")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Membership Status Card with Enhanced Stats
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -201,13 +269,153 @@ fun ProfileScreen(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
+                    // Progress bar for membership days remaining
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Days Remaining",
+                                fontSize = 11.sp,
+                                color = TextSubtle
+                            )
+                            Text(
+                                text = "234 days",
+                                fontSize = 11.sp,
+                                color = ByceGreen,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(6.dp))
+                        LinearProgressIndicator(
+                            progress = 0.64f,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(6.dp)
+                                .clip(RoundedCornerShape(3.dp)),
+                            color = ByceGreen,
+                            trackColor = Color(0xFF2A2A2A)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        StatItem(value = "47", label = "Check-ins")
-                        StatItem(value = "12", label = "Gyms Visited")
-                        StatItem(value = "18", label = "Classes")
+                        StatItem(value = "47", label = "Check-ins", icon = "✓")
+                        StatItem(value = "12", label = "Gyms", icon = "🏋️")
+                        StatItem(value = "18", label = "Classes", icon = "📚")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Fitness Goals Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(GlassSurfaceMedium)
+                    .border(1.dp, GlassBorderLight, RoundedCornerShape(16.dp))
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Fitness Goals",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextWhite
+                        )
+                        Icon(
+                            imageVector = Icons.Default.TrendingUp,
+                            contentDescription = null,
+                            tint = ByceGreen,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(14.dp))
+                    
+                    GoalProgressItem(
+                        label = "Monthly Visits",
+                        current = 14,
+                        target = 20,
+                        progress = 0.7f,
+                        icon = Icons.Default.LocalFireDepartment
+                    )
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    GoalProgressItem(
+                        label = "Workout Hours",
+                        current = 18,
+                        target = 30,
+                        progress = 0.6f,
+                        icon = Icons.Default.Timer
+                    )
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    GoalProgressItem(
+                        label = "Calories Burned",
+                        current = 8500,
+                        target = 12000,
+                        progress = 0.71f,
+                        icon = Icons.Default.FitnessCenter
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Achievements Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(GlassSurfaceMedium)
+                    .border(1.dp, GlassBorderLight, RoundedCornerShape(16.dp))
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Achievements",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextWhite
+                        )
+                        Text(
+                            text = "7 Earned",
+                            fontSize = 11.sp,
+                            color = ByceGreen,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(14.dp))
+                    
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        AchievementBadge(emoji = "🔥", label = "Streak\n7 Days")
+                        AchievementBadge(emoji = "💪", label = "Strong\nStart")
+                        AchievementBadge(emoji = "🏆", label = "First\nMonth")
+                        AchievementBadge(emoji = "⭐", label = "Early\nBird")
                     }
                 }
             }
@@ -352,6 +560,124 @@ fun ProfileScreen(
 }
 
 @Composable
+private fun DetailRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    value: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = ByceGreen,
+            modifier = Modifier.size(18.dp)
+        )
+        
+        Spacer(modifier = Modifier.width(12.dp))
+        
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                color = TextSubtle
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = value,
+                fontSize = 13.sp,
+                color = TextWhite,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+@Composable
+private fun GoalProgressItem(
+    label: String,
+    current: Int,
+    target: Int,
+    progress: Float,
+    icon: androidx.compose.ui.graphics.vector.ImageVector
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = ByceGreen,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = label,
+                    fontSize = 12.sp,
+                    color = TextWhite,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            Text(
+                text = "$current / $target",
+                fontSize = 11.sp,
+                color = TextSubtle
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        LinearProgressIndicator(
+            progress = progress,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp)
+                .clip(RoundedCornerShape(3.dp)),
+            color = ByceGreen,
+            trackColor = Color(0xFF2A2A2A)
+        )
+    }
+}
+
+@Composable
+private fun AchievementBadge(
+    emoji: String,
+    label: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .background(Color(0xFF1E1E1E))
+                .border(2.dp, ByceGreen, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = emoji,
+                fontSize = 24.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = label,
+            fontSize = 9.sp,
+            color = TextSubtle,
+            fontWeight = FontWeight.Medium,
+            lineHeight = 11.sp
+        )
+    }
+}
+
+@Composable
 private fun ProfileOptionItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
@@ -408,18 +734,24 @@ private fun ProfileOptionItem(
 @Composable
 private fun StatItem(
     value: String,
-    label: String
+    label: String,
+    icon: String
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
+            text = icon,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
             text = value,
-            fontSize = 22.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = ByceGreen
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = label,
             fontSize = 11.sp,
