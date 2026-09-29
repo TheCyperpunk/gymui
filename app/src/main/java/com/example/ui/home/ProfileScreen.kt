@@ -25,28 +25,52 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.DataUsage
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.ManageAccounts
+import androidx.compose.material.icons.filled.MobileFriendly
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Payment
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Policy
+import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.VpnKey
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -67,7 +91,7 @@ import com.example.ui.theme.TextSubtle
 import com.example.ui.theme.TextWhite
 
 /**
- * Screen for Member Profile - Enhanced with detailed information
+ * Screen for Member Profile - Enhanced with comprehensive details
  */
 @Composable
 fun ProfileScreen(
@@ -230,7 +254,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Membership Status Card with Enhanced Stats
+            // Membership Status Card
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -269,7 +293,6 @@ fun ProfileScreen(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    // Progress bar for membership days remaining
                     Column {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -422,7 +445,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Account Settings Section
+            // Account Settings Section - EXPANDED
             Text(
                 text = "Account",
                 fontSize = 16.sp,
@@ -442,9 +465,34 @@ fun ProfileScreen(
                     subtitle = "Update your name, photo & contact"
                 )
                 ProfileOptionItem(
+                    icon = Icons.Default.ManageAccounts,
+                    title = "Account Settings",
+                    subtitle = "Email, phone & password settings"
+                )
+                ProfileOptionItem(
                     icon = Icons.Default.Badge,
                     title = "Member Credential Pass",
-                    subtitle = "BYCE-9842-7104"
+                    subtitle = "BYCE-9842-7104 • Digital ID"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Verified,
+                    title = "Verification Status",
+                    subtitle = "Email & phone verified"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Password,
+                    title = "Change Password",
+                    subtitle = "Update your account password"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.VpnKey,
+                    title = "Two-Factor Authentication",
+                    subtitle = "Add extra security to your account"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.AccountCircle,
+                    title = "Linked Accounts",
+                    subtitle = "Connect Google, Apple, Facebook"
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Payment,
@@ -452,15 +500,40 @@ fun ProfileScreen(
                     subtitle = "Manage cards & billing info"
                 )
                 ProfileOptionItem(
+                    icon = Icons.Default.CreditCard,
+                    title = "Saved Cards",
+                    subtitle = "View & manage payment cards"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Wallet,
+                    title = "Byce Wallet",
+                    subtitle = "Balance: ₹0 • Add money"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Receipt,
+                    title = "Billing & Invoices",
+                    subtitle = "Download payment receipts"
+                )
+                ProfileOptionItem(
                     icon = Icons.Default.History,
                     title = "Membership History",
                     subtitle = "View past memberships & renewals"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.AccountBalance,
+                    title = "Subscription Management",
+                    subtitle = "Upgrade, renew or cancel plan"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Block,
+                    title = "Deactivate Account",
+                    subtitle = "Temporarily disable your account"
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Preferences Section
+            // Preferences Section - EXPANDED
             Text(
                 text = "Preferences",
                 fontSize = 16.sp,
@@ -480,20 +553,55 @@ fun ProfileScreen(
                     subtitle = "Push alerts & visit updates"
                 )
                 ProfileOptionItem(
+                    icon = Icons.Default.NotificationsActive,
+                    title = "Notification Settings",
+                    subtitle = "Customize alerts for classes & gyms"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Email,
+                    title = "Email Preferences",
+                    subtitle = "Newsletters & promotional emails"
+                )
+                ProfileOptionItem(
                     icon = Icons.Default.Language,
                     title = "Language & Region",
-                    subtitle = "English (US)"
+                    subtitle = "English (US) • Kerala, India"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.DarkMode,
+                    title = "Appearance",
+                    subtitle = "Theme: Dark • Auto-adjust brightness"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.MobileFriendly,
+                    title = "Display Settings",
+                    subtitle = "Text size, layout & accessibility"
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Settings,
                     title = "App Settings",
-                    subtitle = "Display, theme & preferences"
+                    subtitle = "General preferences & defaults"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.DataUsage,
+                    title = "Data & Storage",
+                    subtitle = "Cache management & offline mode"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Sync,
+                    title = "Sync & Backup",
+                    subtitle = "Auto-sync workout data"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.LocationOn,
+                    title = "Location Services",
+                    subtitle = "GPS for nearby gym recommendations"
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Support & Info Section
+            // Support & Info Section - EXPANDED
             Text(
                 text = "Support & Info",
                 fontSize = 16.sp,
@@ -510,22 +618,82 @@ fun ProfileScreen(
                 ProfileOptionItem(
                     icon = Icons.Default.Help,
                     title = "Help Center",
-                    subtitle = "FAQs, support & contact us"
+                    subtitle = "FAQs, tutorials & troubleshooting"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Phone,
+                    title = "Contact Support",
+                    subtitle = "Chat, call or email us"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Description,
+                    title = "User Guide",
+                    subtitle = "Learn how to use Byce features"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Feedback,
+                    title = "Send Feedback",
+                    subtitle = "Report bugs or suggest features"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.RateReview,
+                    title = "Rate Byce App",
+                    subtitle = "Share your experience on Play Store"
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Share,
                     title = "Invite Friends",
-                    subtitle = "Share Byce with your friends"
+                    subtitle = "Refer friends & earn rewards"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.EmojiEvents,
+                    title = "Referral Program",
+                    subtitle = "Get ₹500 for each referral"
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Lock,
-                    title = "Privacy & Security",
-                    subtitle = "Terms, privacy policy & permissions"
+                    title = "Privacy Policy",
+                    subtitle = "How we handle your data"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Gavel,
+                    title = "Terms of Service",
+                    subtitle = "User agreement & conditions"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Policy,
+                    title = "Cookie Policy",
+                    subtitle = "Information about cookies we use"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Security,
+                    title = "Security Center",
+                    subtitle = "Account security & data protection"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Shield,
+                    title = "Safety Guidelines",
+                    subtitle = "Gym safety & COVID protocols"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Fingerprint,
+                    title = "Data & Privacy",
+                    subtitle = "Manage permissions & data sharing"
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Info,
                     title = "About Byce",
                     subtitle = "Version 1.0.0 • Learn more"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Update,
+                    title = "Check for Updates",
+                    subtitle = "Latest version: 1.0.0"
+                )
+                ProfileOptionItem(
+                    icon = Icons.Default.Description,
+                    title = "Open Source Licenses",
+                    subtitle = "Third-party software notices"
                 )
             }
 
