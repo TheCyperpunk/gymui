@@ -1,4 +1,4 @@
-package com.example.ui.components
+﻿package com.example.ui.components
 
 import android.annotation.SuppressLint
 import android.os.Handler
@@ -161,7 +161,7 @@ fun MapLibreMapView(
                         }
                     }
 
-                    loadUrl("file:///android_asset/map_debug.html")
+                    loadUrl("file:///android_asset/map.html")
                     webViewRef = this
                 }
             },
@@ -178,4 +178,5 @@ fun MapLibreMapView(
         }
     }
 }
+
 
