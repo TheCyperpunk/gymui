@@ -98,6 +98,12 @@ fun ProfileScreen(
     onBackClick: () -> Unit = {},
     onLogOutClick: () -> Unit = {},
     onTabSelected: (String) -> Unit = {},
+    onNavigateToAccountSettings: () -> Unit = {},
+    onNavigateToPaymentMethods: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {},
+    onNavigateToHelpCenter: () -> Unit = {},
+    onNavigateToMembershipHistory: () -> Unit = {},
+    onNavigateToPrivacySecurity: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -184,7 +190,7 @@ fun ProfileScreen(
                             .align(Alignment.BottomEnd)
                             .clip(CircleShape)
                             .background(ByceGreen)
-                            .clickable { }
+                            .clickable(onClick = onClick)
                             .border(2.dp, DarkNavy, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
@@ -465,9 +471,15 @@ fun ProfileScreen(
                     subtitle = "Update your name, photo & contact"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.ManageAccounts,
+
                     title = "Account Settings",
-                    subtitle = "Email, phone & password settings"
+
+                    subtitle = "Email, phone & password settings",
+
+                    onClick = onNavigateToAccountSettings
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Badge,
@@ -495,9 +507,15 @@ fun ProfileScreen(
                     subtitle = "Connect Google, Apple, Facebook"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.Payment,
+
                     title = "Payment Methods",
-                    subtitle = "Manage cards & billing info"
+
+                    subtitle = "Manage cards & billing info",
+
+                    onClick = onNavigateToPaymentMethods
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.CreditCard,
@@ -515,9 +533,15 @@ fun ProfileScreen(
                     subtitle = "Download payment receipts"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.History,
+
                     title = "Membership History",
-                    subtitle = "View past memberships & renewals"
+
+                    subtitle = "View past memberships & renewals",
+
+                    onClick = onNavigateToMembershipHistory
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.AccountBalance,
@@ -553,9 +577,15 @@ fun ProfileScreen(
                     subtitle = "Push alerts & visit updates"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.NotificationsActive,
+
                     title = "Notification Settings",
-                    subtitle = "Customize alerts for classes & gyms"
+
+                    subtitle = "Customize alerts for classes & gyms",
+
+                    onClick = onNavigateToNotifications
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Email,
@@ -616,9 +646,15 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 ProfileOptionItem(
+
                     icon = Icons.Default.Help,
+
                     title = "Help Center",
-                    subtitle = "FAQs, tutorials & troubleshooting"
+
+                    subtitle = "FAQs, tutorials & troubleshooting",
+
+                    onClick = onNavigateToHelpCenter
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Phone,
@@ -676,9 +712,15 @@ fun ProfileScreen(
                     subtitle = "Gym safety & COVID protocols"
                 )
                 ProfileOptionItem(
+
                     icon = Icons.Default.Fingerprint,
+
                     title = "Data & Privacy",
-                    subtitle = "Manage permissions & data sharing"
+
+                    subtitle = "Manage permissions & data sharing",
+
+                    onClick = onNavigateToPrivacySecurity
+
                 )
                 ProfileOptionItem(
                     icon = Icons.Default.Info,
@@ -849,12 +891,13 @@ private fun AchievementBadge(
 private fun ProfileOptionItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
-    subtitle: String
+    subtitle: String,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickable(onClick = onClick)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -927,3 +970,4 @@ private fun StatItem(
         )
     }
 }
+

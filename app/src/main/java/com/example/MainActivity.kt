@@ -1,4 +1,4 @@
-package com.example
+﻿package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,16 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.ui.auth.AuthScreen
-import com.example.ui.home.CheckInScreen
-import com.example.ui.home.DiscoverScreen
-import com.example.ui.home.GymDetailScreen
-import com.example.ui.home.GymMapScreen
-import com.example.ui.home.GymLocation
-import com.example.ui.home.HomeScreen
-import com.example.ui.home.MembershipScreen
-import com.example.ui.home.ProfileScreen
-import com.example.ui.home.SAMPLE_GYMS
-import com.example.ui.home.VisitHistoryScreen
+import com.example.ui.home.*
 import com.example.ui.onboarding.OnboardingScreen
 import com.example.ui.theme.MyApplicationTheme
 
@@ -35,7 +26,13 @@ enum class AppScreen {
     GYM_MAP,
     MEMBERSHIP,
     PROFILE,
-    VISIT_HISTORY
+    VISIT_HISTORY,
+    ACCOUNT_SETTINGS,
+    PAYMENT_METHODS,
+    NOTIFICATION_SETTINGS,
+    HELP_CENTER,
+    MEMBERSHIP_HISTORY,
+    PRIVACY_SECURITY
 }
 
 class MainActivity : ComponentActivity() {
@@ -197,6 +194,24 @@ class MainActivity : ComponentActivity() {
                     "Profile" -> currentScreen = AppScreen.PROFILE
                   }
                 },
+                onNavigateToAccountSettings = {
+                  currentScreen = AppScreen.ACCOUNT_SETTINGS
+                },
+                onNavigateToPaymentMethods = {
+                  currentScreen = AppScreen.PAYMENT_METHODS
+                },
+                onNavigateToNotifications = {
+                  currentScreen = AppScreen.NOTIFICATION_SETTINGS
+                },
+                onNavigateToHelpCenter = {
+                  currentScreen = AppScreen.HELP_CENTER
+                },
+                onNavigateToMembershipHistory = {
+                  currentScreen = AppScreen.MEMBERSHIP_HISTORY
+                },
+                onNavigateToPrivacySecurity = {
+                  currentScreen = AppScreen.PRIVACY_SECURITY
+                },
                 modifier = Modifier.fillMaxSize()
               )
             }
@@ -206,6 +221,48 @@ class MainActivity : ComponentActivity() {
                   currentScreen = AppScreen.HOME
                 },
                 modifier = Modifier.fillMaxSize()
+              )
+            }
+            AppScreen.ACCOUNT_SETTINGS -> {
+              AccountSettingsScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.PAYMENT_METHODS -> {
+              PaymentMethodsScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.NOTIFICATION_SETTINGS -> {
+              NotificationSettingsScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.HELP_CENTER -> {
+              HelpCenterScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.MEMBERSHIP_HISTORY -> {
+              MembershipHistoryScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
+              )
+            }
+            AppScreen.PRIVACY_SECURITY -> {
+              PrivacySecurityScreen(
+                onBackClick = {
+                  currentScreen = AppScreen.PROFILE
+                }
               )
             }
           }
