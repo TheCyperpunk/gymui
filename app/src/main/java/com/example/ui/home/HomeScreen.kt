@@ -125,7 +125,8 @@ val SAMPLE_GYMS = listOf(
         tags = listOf("Free weights", "Classes", "Sauna"),
         statusText = "Open · Quiet now",
         latitude = 37.789172,
-        longitude = -122.401449
+        longitude = -122.401449,
+        rating = 4.9
     ),
     GymLocation(
         id = "2",
@@ -136,7 +137,8 @@ val SAMPLE_GYMS = listOf(
         tags = listOf("Heavy lifting", "Sauna", "Turf"),
         statusText = "Open · Moderate crowd",
         latitude = 37.778519,
-        longitude = -122.395232
+        longitude = -122.395232,
+        rating = 4.8
     ),
     GymLocation(
         id = "3",
@@ -147,7 +149,44 @@ val SAMPLE_GYMS = listOf(
         tags = listOf("Cardio deck", "Pool", "Yoga"),
         statusText = "Open 24/7",
         latitude = 37.800542,
-        longitude = -122.436128
+        longitude = -122.436128,
+        rating = 4.7
+    ),
+    GymLocation(
+        id = "4",
+        name = "Apex Strength & Conditioning",
+        distance = "1.8 km away",
+        cityArea = "Mission · SF",
+        imageRes = R.drawable.img_gym_interior,
+        tags = listOf("Free weights", "Heavy lifting", "Classes"),
+        statusText = "Open · Moderate crowd",
+        latitude = 37.765120,
+        longitude = -122.419900,
+        rating = 4.9
+    ),
+    GymLocation(
+        id = "5",
+        name = "Velocity Athletic Club",
+        distance = "2.9 km away",
+        cityArea = "Nob Hill · SF",
+        imageRes = R.drawable.img_gym_reception,
+        tags = listOf("Sauna", "Classes", "Open 24/7"),
+        statusText = "Open 24/7",
+        latitude = 37.793200,
+        longitude = -122.416800,
+        rating = 4.8
+    ),
+    GymLocation(
+        id = "6",
+        name = "Titan Powerhouse",
+        distance = "4.2 km away",
+        cityArea = "Potrero · SF",
+        imageRes = R.drawable.pulse_fitness_gym_1789554105342,
+        tags = listOf("Free weights", "Turf", "Heavy lifting"),
+        statusText = "Open · Quiet now",
+        latitude = 37.759800,
+        longitude = -122.398500,
+        rating = 4.6
     )
 )
 
@@ -166,6 +205,7 @@ fun HomeScreen(
     onNavigateToCheckIn: () -> Unit = {},
     onNavigateToGymDetail: (GymLocation) -> Unit = {},
     onNavigateToDiscover: () -> Unit = {},
+    onNavigateToGymMap: () -> Unit = {},
     onNavigateToMembership: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {},
@@ -266,6 +306,7 @@ fun HomeScreen(
                 selectedTab = tab
                 when (tab) {
                     "Discover" -> onNavigateToDiscover()
+                    "Gym Map" -> onNavigateToGymMap()
                     "Membership" -> onNavigateToMembership()
                     "Profile" -> onNavigateToProfile()
                 }
@@ -937,6 +978,7 @@ fun GlassBottomBar(
     val navItems = listOf(
         NavItem("Home", Icons.Default.Home),
         NavItem("Discover", Icons.Default.Search),
+        NavItem("Gym Map", Icons.Default.LocationOn),
         NavItem("Membership", Icons.Default.CreditCard),
         NavItem("Profile", Icons.Default.Person)
     )
@@ -1030,3 +1072,4 @@ fun GlassBottomBar(
 }
 
 private data class NavItem(val label: String, val icon: ImageVector)
+

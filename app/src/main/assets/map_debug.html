@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Gym Map - Byce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #0c0c0c;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: white;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        #debug {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+        }
+        #debug.show {
+            display: block;
+        }
+        .error { color: #ff6b6b; }
+        .success { color: #51cf66; }
+        .info { color: #74c0fc; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="debug"></div>
+    
+    <script>
+        const debug = document.getElementById('debug');
+        const mapDiv = document.getElementById('map');
+        
+        function log(msg, type = 'info') {
+            console.log(msg);
+            const p = document.createElement('p');
+            p.className = type;
+            p.textContent = new Date().toLocaleTimeString() + ': ' + msg;
+            debug.appendChild(p);
+            debug.classList.add('show');
+            debug.scrollTop = debug.scrollHeight;
+        }
+        
+        log('Map initialization starting...', 'info');
+        
+        // Check if maplibre-gl.js is loaded
+        if (typeof maplibregl === 'undefined') {
+            log('ERROR: MapLibre GL JS not loaded!', 'error');
+            mapDiv.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;text-align:center;padding:20px;"><div><h2>Map Loading Error</h2><p>MapLibre GL JS library not found</p><p style="margin-top:10px;font-size:12px;">Please check assets folder</p></div></div>';
+        } else {
+            log('MapLibre GL JS loaded successfully', 'success');
+            
+            try {
+                const map = new maplibregl.Map({
+                    container: 'map',
+                    style: 'https://tiles.openfreemap.org/styles/liberty',
+                    center: [-122.4090, 37.7840],
+                    zoom: 13.5
+                });
+                
+                log('Map object created', 'success');
+                
+                map.on('load', () => {
+                    log('Map loaded successfully!', 'success');
+                    setTimeout(() => {
+                        debug.classList.remove('show');
+                    }, 3000);
+                    
+                    if (window.AndroidBridge && window.AndroidBridge.onMapReady) {
+                        window.AndroidBridge.onMapReady();
+                    }
+                });
+                
+                map.on('error', (e) => {
+                    log('Map error: ' + JSON.stringify(e.error), 'error');
+                });
+                
+            } catch(err) {
+                log('Exception: ' + err.message, 'error');
+                mapDiv.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;text-align:center;padding:20px;"><div><h2>Map Error</h2><p>' + err.message + '</p></div></div>';
+            }
+        }
+        
+        window.updateGyms = function(gymsJson) {
+            log('updateGyms called with: ' + gymsJson, 'info');
+        };
+        
+        window.selectGym = function(gymId) {
+            log('selectGym called: ' + gymId, 'info');
+        };
+        
+        window.recenterMap = function() {
+            log('recenterMap called', 'info');
+        };
+    </script>
+</body>
+</html>

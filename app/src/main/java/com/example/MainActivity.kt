@@ -15,6 +15,7 @@ import com.example.ui.auth.AuthScreen
 import com.example.ui.home.CheckInScreen
 import com.example.ui.home.DiscoverScreen
 import com.example.ui.home.GymDetailScreen
+import com.example.ui.home.GymMapScreen
 import com.example.ui.home.GymLocation
 import com.example.ui.home.HomeScreen
 import com.example.ui.home.MembershipScreen
@@ -31,6 +32,7 @@ enum class AppScreen {
     CHECK_IN,
     GYM_DETAIL,
     DISCOVER,
+    GYM_MAP,
     MEMBERSHIP,
     PROFILE,
     VISIT_HISTORY
@@ -78,6 +80,9 @@ class MainActivity : ComponentActivity() {
                 },
                 onNavigateToDiscover = {
                   currentScreen = AppScreen.DISCOVER
+                },
+                onNavigateToGymMap = {
+                  currentScreen = AppScreen.GYM_MAP
                 },
                 onNavigateToMembership = {
                   currentScreen = AppScreen.MEMBERSHIP
@@ -128,6 +133,29 @@ class MainActivity : ComponentActivity() {
                 onTabSelected = { tab ->
                   when (tab) {
                     "Home" -> currentScreen = AppScreen.HOME
+                    "Discover" -> currentScreen = AppScreen.DISCOVER
+                    "Gym Map" -> currentScreen = AppScreen.GYM_MAP
+                    "Membership" -> currentScreen = AppScreen.MEMBERSHIP
+                    "Profile" -> currentScreen = AppScreen.PROFILE
+                  }
+                },
+                modifier = Modifier.fillMaxSize()
+              )
+            }
+            AppScreen.GYM_MAP -> {
+              GymMapScreen(
+                onGymSelect = { gym ->
+                  selectedGymForDetail = gym
+                  currentScreen = AppScreen.GYM_DETAIL
+                },
+                onBackClick = {
+                  currentScreen = AppScreen.HOME
+                },
+                onTabSelected = { tab ->
+                  when (tab) {
+                    "Home" -> currentScreen = AppScreen.HOME
+                    "Discover" -> currentScreen = AppScreen.DISCOVER
+                    "Gym Map" -> currentScreen = AppScreen.GYM_MAP
                     "Membership" -> currentScreen = AppScreen.MEMBERSHIP
                     "Profile" -> currentScreen = AppScreen.PROFILE
                   }
@@ -144,6 +172,8 @@ class MainActivity : ComponentActivity() {
                   when (tab) {
                     "Home" -> currentScreen = AppScreen.HOME
                     "Discover" -> currentScreen = AppScreen.DISCOVER
+                    "Gym Map" -> currentScreen = AppScreen.GYM_MAP
+                    "Membership" -> currentScreen = AppScreen.MEMBERSHIP
                     "Profile" -> currentScreen = AppScreen.PROFILE
                   }
                 },
@@ -162,7 +192,9 @@ class MainActivity : ComponentActivity() {
                   when (tab) {
                     "Home" -> currentScreen = AppScreen.HOME
                     "Discover" -> currentScreen = AppScreen.DISCOVER
+                    "Gym Map" -> currentScreen = AppScreen.GYM_MAP
                     "Membership" -> currentScreen = AppScreen.MEMBERSHIP
+                    "Profile" -> currentScreen = AppScreen.PROFILE
                   }
                 },
                 modifier = Modifier.fillMaxSize()
