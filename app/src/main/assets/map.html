@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Gym Map - Byce</title>
-    <link rel="stylesheet" href="maplibre-gl.css" />
-    <script src="maplibre-gl.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         * {
             margin: 0;
@@ -21,26 +21,51 @@
         #map {
             width: 100%;
             height: 100%;
+            background-color: #0c0c0c;
         }
-        .marker {
+        .gym-marker {
             background-color: #A6CE39;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            cursor: pointer;
             border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
         }
-        .marker.selected {
+        .gym-marker.selected {
             background-color: #8AB82E;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-color: #A6CE39;
-            box-shadow: 0 0 20px rgba(166, 206, 57, 0.8);
+            box-shadow: 0 0 25px rgba(166, 206, 57, 0.9);
+            z-index: 1000 !important;
+        }
+        .leaflet-popup-content-wrapper {
+            background-color: #1a1a1a;
+            color: white;
+            border-radius: 12px;
+        }
+        .leaflet-popup-content {
+            margin: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .gym-popup h3 {
+            color: #A6CE39;
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+        .gym-popup p {
+            margin: 4px 0;
+            font-size: 13px;
+            color: #ccc;
+        }
+        .leaflet-popup-tip {
+            background-color: #1a1a1a;
         }
     </style>
 </head>
@@ -49,41 +74,56 @@
     
     <script>
         let map = null;
-        let markers = [];
+        let markers = {};
         let currentGyms = [];
+        let selectedGymId = null;
         
-        // Initialize map centered on Ernakulam (Kochi)
+        // Initialize Leaflet map centered on Kochi
         try {
-            map = new maplibregl.Map({
-                container: 'map',
-                style: 'https://tiles.openfreemap.org/styles/liberty',
-                center: [76.2814, 9.9674], // Kochi MG Road
+            map = L.map('map', {
+                center: [9.9674, 76.2814], // Kochi MG Road
                 zoom: 11,
-                pitch: 0,
-                bearing: 0
+                zoomControl: true,
+                attributionControl: false
             });
             
-            map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                minZoom: 8
+            }).addTo(map);
             
-            map.on('load', () => {
-                console.log('Map loaded successfully');
+            // Map loaded event
+            setTimeout(() => {
+                console.log('Map initialized successfully');
                 if (window.AndroidBridge && window.AndroidBridge.onMapReady) {
                     window.AndroidBridge.onMapReady();
                 }
-            });
-            
-            map.on('error', (e) => {
-                console.error('Map error:', e.error);
-            });
+            }, 500);
             
         } catch(err) {
             console.error('Map initialization error:', err);
+            document.getElementById('map').innerHTML = 
+                '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:white;text-align:center;padding:20px;background:#0c0c0c;">' +
+                '<div><h2>Map Error</h2><p>' + err.message + '</p></div></div>';
         }
         
         // Function to clear all markers
         function clearMarkers() {
-            markers.forEach(marker => marker.remove());
-            markers = [];
+            Object.values(markers).forEach(marker => {
+                map.removeLayer(marker);
+            });
+            markers = {};
+        }
+        
+        // Function to create custom marker icon
+        function createMarkerIcon(gymId) {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div class="gym-marker" data-gym-id="' + gymId + '">📍</div>',
+                iconSize: [36, 36],
+                iconAnchor: [18, 36]
+            });
         }
         
         // Function to add gym markers
@@ -94,44 +134,47 @@
                 
                 clearMarkers();
                 
-                if (!map || gyms.length === 0) return;
+                if (!map || gyms.length === 0) {
+                    console.log('No gyms to display or map not ready');
+                    return;
+                }
+                
+                const bounds = [];
                 
                 gyms.forEach(gym => {
-                    // Create marker element
-                    const el = document.createElement('div');
-                    el.className = 'marker';
-                    el.innerHTML = '📍';
+                    const marker = L.marker(
+                        [gym.latitude, gym.longitude],
+                        { icon: createMarkerIcon(gym.id) }
+                    );
                     
-                    el.addEventListener('click', () => {
+                    // Popup content
+                    const popupContent = 
+                        '<div class="gym-popup">' +
+                        '<h3>' + gym.name + '</h3>' +
+                        '<p>📍 ' + gym.cityArea + '</p>' +
+                        '<p>⭐ ' + gym.rating + ' • ' + gym.distance + '</p>' +
+                        '<p>' + gym.statusText + '</p>' +
+                        '</div>';
+                    
+                    marker.bindPopup(popupContent);
+                    
+                    // Click handler
+                    marker.on('click', function() {
                         if (window.AndroidBridge && window.AndroidBridge.onGymClick) {
                             window.AndroidBridge.onGymClick(gym.id);
                         }
                     });
                     
-                    // Add marker to map
-                    const marker = new maplibregl.Marker({
-                        element: el,
-                        anchor: 'bottom'
-                    })
-                    .setLngLat([gym.longitude, gym.latitude])
-                    .addTo(map);
-                    
-                    markers.push({
-                        marker: marker,
-                        element: el,
-                        gymId: gym.id
-                    });
+                    marker.addTo(map);
+                    markers[gym.id] = marker;
+                    bounds.push([gym.latitude, gym.longitude]);
                 });
                 
                 // Fit map to show all gyms
-                if (gyms.length > 0) {
-                    const bounds = new maplibregl.LngLatBounds();
-                    gyms.forEach(gym => {
-                        bounds.extend([gym.longitude, gym.latitude]);
-                    });
+                if (bounds.length > 0) {
                     map.fitBounds(bounds, {
-                        padding: 50,
-                        maxZoom: 14
+                        padding: [50, 50],
+                        maxZoom: 13
                     });
                 }
                 
@@ -144,21 +187,31 @@
         // Function to highlight selected gym
         window.selectGym = function(gymId) {
             try {
-                markers.forEach(m => {
-                    if (m.gymId === gymId) {
-                        m.element.classList.add('selected');
-                        const gym = currentGyms.find(g => g.id === gymId);
-                        if (gym && map) {
-                            map.flyTo({
-                                center: [gym.longitude, gym.latitude],
-                                zoom: 15,
-                                duration: 1000
-                            });
-                        }
-                    } else {
-                        m.element.classList.remove('selected');
-                    }
+                // Remove selected class from all markers
+                document.querySelectorAll('.gym-marker').forEach(el => {
+                    el.classList.remove('selected');
                 });
+                
+                // Add selected class to the target marker
+                const targetElement = document.querySelector('[data-gym-id="' + gymId + '"]');
+                if (targetElement) {
+                    targetElement.classList.add('selected');
+                }
+                
+                // Fly to the gym location
+                const gym = currentGyms.find(g => g.id === gymId);
+                if (gym && map) {
+                    map.flyTo([gym.latitude, gym.longitude], 15, {
+                        duration: 1.0
+                    });
+                    
+                    // Open popup
+                    if (markers[gymId]) {
+                        markers[gymId].openPopup();
+                    }
+                }
+                
+                selectedGymId = gymId;
             } catch(err) {
                 console.error('selectGym error:', err);
             }
@@ -168,15 +221,18 @@
         window.recenterMap = function() {
             try {
                 if (map && currentGyms.length > 0) {
-                    const bounds = new maplibregl.LngLatBounds();
-                    currentGyms.forEach(gym => {
-                        bounds.extend([gym.longitude, gym.latitude]);
-                    });
+                    const bounds = currentGyms.map(gym => [gym.latitude, gym.longitude]);
                     map.fitBounds(bounds, {
-                        padding: 50,
-                        maxZoom: 14,
-                        duration: 1000
+                        padding: [50, 50],
+                        maxZoom: 13,
+                        duration: 1.0
                     });
+                    
+                    // Clear selection
+                    document.querySelectorAll('.gym-marker').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    selectedGymId = null;
                 }
             } catch(err) {
                 console.error('recenterMap error:', err);
