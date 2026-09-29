@@ -1401,15 +1401,7 @@ fun GlassBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xF0222021),
-                        Color(0xF8161415),
-                        Color(0xFF161415)
-                    )
-                )
-            )
+            .background(Color.White.copy(alpha = 0.15f))
             .then(
                 if (borderAlpha > 0.001f) {
                     Modifier.border(
@@ -1486,5 +1478,6 @@ fun GlassBottomBar(
 }
 
 private data class NavItem(val label: String, val icon: ImageVector)
+
 
 
